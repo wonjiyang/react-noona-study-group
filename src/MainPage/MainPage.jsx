@@ -36,7 +36,9 @@ const MainPage = () => {
   ];
 
   //   일일할당량 게이지
-  let answerGraph = chat.filter((el) => el.content.includes("정답"));
+  let answerGraph = chat
+    .filter((el) => el.content.includes("정답") && el.content.includes("해설"))
+    .filter((el) => el.role === "ai");
 
   useEffect(() => {
     if (chatEndRef.current) {
@@ -225,7 +227,9 @@ const MainPage = () => {
                   <p>*이용 가이드*</p>
                   <p>1. 난이도 및 테마 설정 버튼 클릭</p>
                   <p>2. 모달창안에서 난이도와 테마를 입력하면 질문 시작</p>
-                  <p>3. 잘 모르겠으면 검색란 입 힌트 버튼도 이용해보세요!</p>
+                  <p>3. 잘 모르겠으면 검색란 위 힌트 버튼도 이용해보세요!</p>
+                  <p>4. 텍스트로 질문에 답변</p>
+                  <p>5. 정답 시 할당량 그래프 증가! 오답시 변동 없음</p>
                 </li>
                 {chat.map((msg, i) => (
                   <li
