@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+ul,
+p {
+  margin: 0;
+  padding: 0;
+}
+/* 스크롤바 숨기기 */
+.chat-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.chat-scroll {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
