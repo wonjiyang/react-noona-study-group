@@ -37,7 +37,7 @@ const MainPage = () => {
 
   //   일일할당량 게이지
   let answerGraph = chat.filter((el) => el.content.includes("정답"));
-  console.log(chat, answerGraph);
+
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -100,6 +100,8 @@ const MainPage = () => {
         {/* 박스 */}
         <div
           style={{
+            minWidth: "350px",
+            margin: "auto",
             width: "80%",
             border: "1px solid grey",
             borderRadius: "20px",
@@ -206,7 +208,7 @@ const MainPage = () => {
                   listStyle: "none",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "10px",
+                  gap: "30px",
                 }}
               >
                 <li
@@ -244,7 +246,7 @@ const MainPage = () => {
                     <p
                       style={{
                         position: "absolute",
-                        bottom: "-20px",
+                        bottom: "-40px",
                         left: msg.role === "ai" && "0",
                         right: msg.role === "user" && "0",
                       }}
