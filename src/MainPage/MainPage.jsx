@@ -19,6 +19,7 @@ const MainPage = () => {
   const [showMsgModal, setShowMsgModal] = useState(false);
   //   hooks로 api로직 분리
   const {
+    answers,
     setChat,
     setQuestion,
     chat,
@@ -34,17 +35,19 @@ const MainPage = () => {
     "포기할게요...",
     "처음부터 다시시작",
   ];
-
+  console.log(answers);
   //   일일할당량 게이지
   let answerGraph = chat
-    .filter((el) => el.content.includes("정답") && el.content.includes("해설"))
-    .filter((el) => el.role === "ai");
+    .filter((el) => el.content.includes("정답") && el.content.includes("답변"))
+    .filter((el) => el.role === "ai")
+    .filter((el) => !el.content.includes("오답"));
 
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chat, loading]);
+  console.log(chat);
   // 일일할당량별 메시지
   useEffect(() => {
     const percent = Math.floor((answerGraph.length / quota) * 100);
