@@ -1,0 +1,131 @@
+.page {
+  background-color: #dddddd;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+  position: relative;
+}
+
+.iconBox {
+  background-color: #fff;
+  width: 47vw;
+  height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+.chatIconContainer {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #0d6efd;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 32px;
+  color: white;
+}
+
+.box {
+  width: 47vw;
+  min-height: 85vh;
+  background-color: white;
+  border-radius: 10px;
+  padding: 90px 40px 30px;
+  overflow-y: auto;
+  margin-top: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chatBubbleContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.chatBubble {
+  width: 100% !important;
+  text-align: center;
+  background-color: #e8e8e8;
+  padding: 15px;
+  border-radius: 15px;
+  width: fit-content;
+  white-space: pre-wrap;
+}
+
+.message {
+  font-size: 15px;
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.startButton {
+  display: block;
+  margin: 32px auto 0;
+  padding: 10px 35px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.startButton:hover {
+  background-color: #0056b3;
+}
+
+.newBubble {
+  background-color: #0d6efd !important;
+}
+
+.newMessage {
+  color: white !important;
+}
+
+@media (max-width: 1280px) {
+  .box {
+    max-height: 78vh;
+  }
+}
+
+@media (max-width: 1024px) {
+  .box,
+  .iconBox {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .box,
+  .iconBox {
+    max-height: 85vh;
+    width: 90vw;
+  }
+
+  .chatIconContainer {
+    width: 50px;
+    height: 50px;
+  }
+
+  .icon {
+    font-size: 26px;
+  }
+}
