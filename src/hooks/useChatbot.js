@@ -16,7 +16,7 @@ const useChatbot = () => {
       const userMessage = {
         role: "user",
         content: userInput,
-        date: new Date().toString(),
+        date: new Date().toLocaleString("ko-KR"),
         theme: subject,
         level: level,
       };
@@ -33,7 +33,7 @@ const useChatbot = () => {
   정답여부: 정답 시 정답 오답 시 오답
   질문:
   답변: 면접관의 해설
-  키워드점수: (1~10)
+  키워드점수:사용자 답변에 맞는 키워드 가 있을때 점수로 (0~10) 
   난이도: ${currentLevel}
   테마: ${currentSubject}
   중복 문제는 내지 않는다.
@@ -89,7 +89,12 @@ const useChatbot = () => {
     [question, chat, level, subject]
   );
   const answers = chat
-    .filter((msg) => msg.role === "ai" && msg.content.includes("정답여부:"))
+    .filter(
+      (msg) =>
+        msg.role === "ai" &&
+        msg.content.includes("정답여부:") &&
+        msg.content.includes("난이도:")
+    )
     .map((msg) => {
       const lines = msg.content.split(/\n/).map((line) => line.trim());
       const obj = {};
@@ -107,7 +112,7 @@ const useChatbot = () => {
         else if (line.startsWith("테마:"))
           obj.subject = line.replace("테마:", "").trim();
       });
-      obj.date = new Date(msg.date).toString();
+      obj.date = new Date(msg.date).toLocaleString("ko-KR");
       return obj;
     });
   return {

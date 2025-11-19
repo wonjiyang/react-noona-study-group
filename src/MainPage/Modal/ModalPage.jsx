@@ -34,7 +34,7 @@ const ModalPage = ({
             <span
               key={lv}
               style={{
-                border: level === lv ? "2px solid gray" : "none",
+                border: level === lv ? "2px solid blue" : "none",
                 padding: "6px",
                 cursor: "pointer",
               }}
@@ -52,7 +52,7 @@ const ModalPage = ({
             <span
               key={sub}
               style={{
-                border: subject === sub ? "2px solid gray" : "none",
+                border: subject === sub ? "2px solid blue" : "none",
                 padding: "6px",
                 cursor: "pointer",
               }}
@@ -66,7 +66,7 @@ const ModalPage = ({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={selectThemeLevel}>
+        <Button variant="primary" onClick={selectThemeLevel}>
           전송
         </Button>
       </Modal.Footer>

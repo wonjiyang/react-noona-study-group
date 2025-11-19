@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { Container, Button } from "react-bootstrap";
 import "./MainPage.style.css";
 import useChatbot from "../hooks/useChatbot";
@@ -16,7 +18,7 @@ const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
   //   달성률 메시지, 메시지 모달
   const [msg, setMsg] = useState("");
-  const [showMsgModal, setShowMsgModal] = useState(false);
+
   //   hooks로 api로직 분리
   const {
     answers,
@@ -30,42 +32,40 @@ const MainPage = () => {
     setSubject,
     submitQuestion,
   } = useChatbot();
-  const buttonText = [
-    "모르겠어요... 힌트",
-    "포기할게요...",
-    "처음부터 다시시작",
-  ];
-  console.log(answers);
+  const buttonText = ["질문받기", "힌트받기", "포기하기", "처음부터 다시시작"];
+
   //   일일할당량 게이지
   let answerGraph = chat
-    .filter((el) => el.content.includes("정답") && el.content.includes("답변"))
-    .filter((el) => el.role === "ai")
-    .filter((el) => !el.content.includes("오답"));
+    .filter(
+      (el) =>
+        el.content.includes("정답") &&
+        el.content.includes("답변") &&
+        !el.content.includes("오답")
+    )
+    .filter((el) => el.role === "ai");
 
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chat, loading]);
-  console.log(chat);
+  useEffect(() => {
+    console.log(answers);
+  }, [answers]);
+
   // 일일할당량별 메시지
   useEffect(() => {
     const percent = Math.floor((answerGraph.length / quota) * 100);
     if (percent >= 100) {
       setMsg("100% 달성! 축하드려요");
-      setShowMsgModal(true);
     } else if (percent >= 80) {
       setMsg("이제 얼마 남지 않았어요 조금만 더!");
-      setShowMsgModal(true);
     } else if (percent >= 50) {
-      setMsg("이제 절반 왔어요!! 화이팅~");
-      setShowMsgModal(true);
+      setMsg("이제 절반 넘었어요!! 화이팅~");
     } else if (percent >= 20) {
       setMsg("아직 갈길이 멀어요! 좀 더 힘내보아요");
-      setShowMsgModal(true);
     } else {
-      setMsg("");
-      setShowMsgModal(false);
+      setMsg("이제 시작해보자!");
     }
   }, [answerGraph.length]);
 
@@ -98,209 +98,204 @@ const MainPage = () => {
   return (
     <>
       {/* 컨테이너 */}
-      <Container
-        className="d-flex justify-content-center align-items-center my-5"
-        style={{ width: "80%" }}
-      >
-        {/* 박스 */}
+      <Container style={{ maxWidth: "600px", margin: "50px auto" }}>
+        {/* 일일 할당량, 그래프 박스 */}
         <div
           style={{
             minWidth: "350px",
-            margin: "auto",
-            width: "80%",
-            border: "1px solid grey",
+            width: "100%",
+            backgroundColor: "#fff",
+            padding: "10px",
             borderRadius: "20px",
           }}
         >
-          {/* 프로필, 할당량 그래프, 모달창 버튼 */}
           <div
-            className="d-flex flex-column align-items-center gap-5"
-            style={{ margin: "40px 0" }}
+            className="d-flex justify-content-between align-items-center"
+            style={{
+              width: "90%",
+              margin: "auto",
+            }}
           >
-            <div className="w-75 d-flex justify-content-between">
+            <p style={{ fontSize: "15px", fontWeight: "bold" }}>
+              오늘 할당량 목표
+            </p>
+            <p>{Math.floor((answerGraph.length * 100) / quota)}%</p>
+          </div>
+          <div className="d-flex justify-content-between align-items-center">
+            <div
+              style={{
+                height: "10px",
+                width: "90%",
+                margin: "10px auto",
+                backgroundColor: "#E8E8E8",
+                borderRadius: "20px",
+              }}
+            >
               <div
+                className="bg-primary"
                 style={{
-                  width: "50px",
-                  height: "50px",
-                  backgroundColor: "lightgrey",
-                  borderRadius: "50%",
+                  height: "100%",
+                  width: answerGraph.length * (100 / quota) + "%",
+                  borderRadius: "20px",
+                  position: "relative",
                 }}
               ></div>
-              <Button
-                variant="secondary"
-                size="md"
-                onClick={() => setShowModal(true)}
-              >
-                난이도 및 테마 설정
-              </Button>
-            </div>
-            <div className="d-flex align-items-center" style={{ width: "80%" }}>
-              <div
-                style={{
-                  height: "20px",
-                  width: "100%",
-                  backgroundColor: "lightgrey",
-                  borderRadius: "20px",
-                }}
-              >
-                <div
-                  style={{
-                    height: "100%",
-                    width: answerGraph.length * (100 / quota) + "%",
-                    borderRadius: "20px",
-                    backgroundColor: "gray",
-                    position: "relative",
-                  }}
-                >
-                  {showMsgModal && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "-45px",
-                        right: "-80px",
-                        backgroundColor: "white",
-                        fontSize: "10px",
-                        padding: "6px",
-                        borderRadius: "8px",
-                        zIndex: "20",
-                        border: "1px solid black",
-                      }}
-                    >
-                      {msg}
-                    </div>
-                  )}
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: "30px",
-                      height: "30px",
-                      borderRadius: "50%",
-                      backgroundColor: "white",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      right: "-10px",
-                      border: "2px solid black",
-                      zIndex: "10",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <p style={{ marginLeft: "20px" }}>
-                {Math.floor((answerGraph.length * 100) / quota)}%
-              </p>
             </div>
           </div>
           <div
+            className="d-flex justify-content-between align-items-center flex-wrap"
             style={{
-              width: "100%",
-              backgroundColor: "lightgrey",
-              borderRadius: "20px",
-              padding: "20px",
+              width: "90%",
+              margin: "10px auto",
+              color: "#989898",
+              fontWeight: "bold",
             }}
           >
-            {/* 챗봇 박스 */}
-            <div
+            <p style={{ fontSize: "10px" }}>목표 다시 설정하기 &gt;</p>
+            <p style={{ fontSize: "12px" }}>{msg}</p>
+          </div>
+        </div>
+        {/* 박스 */}
+
+        <div
+          style={{
+            width: "100%",
+            minWidth: "360px",
+            margin: "50px 0",
+            backgroundColor: "#fff",
+            borderRadius: "20px",
+            padding: "20px",
+          }}
+        >
+          {/* 챗봇 박스 */}
+          <div
+            style={{
+              width: "90%",
+              height: "400px",
+              margin: "auto",
+              overflowY: "scroll",
+              padding: "20px",
+            }}
+            className="chat-scroll"
+          >
+            <ul
               style={{
-                width: "80%",
-                height: "320px",
-                margin: "20px auto",
-                overflowY: "scroll",
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: "30px",
               }}
-              className="chat-scroll"
             >
-              <ul
+              <li
                 style={{
-                  listStyle: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "30px",
+                  position: "relative",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  padding: "10px",
+                  backgroundColor: "#ebebeb",
+                  borderRadius: "15px",
+                  width: "50%",
                 }}
               >
+                <p>안녕하세요 ai 면접관입니다.</p>
+                <p>*이용 가이드*</p>
+                <p>
+                  1. 우측 하단 아이콘 버튼을 눌러 난이도와 테마를 설정해주세요.
+                </p>
+                <p>2. 모달창안에서 난이도와 테마를 입력하면 질문 시작</p>
+                <p>3. 잘 모르겠으면 검색란 아래 힌트 버튼도 이용해보세요!</p>
+                <p>4. 텍스트로 질문에 답변</p>
+                <p>5. 정답 시 할당량 그래프 증가!</p>
+                <div className="ai-icon"></div>
+              </li>
+              {chat.map((msg, i) => (
                 <li
+                  key={i}
                   style={{
                     fontSize: "12px",
                     fontWeight: "bold",
                     padding: "8px",
-                    backgroundColor: "white",
-                    borderRadius: "12px",
+                    alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
                     width: "50%",
+                    backgroundColor:
+                      msg.role === "user" ? "#0d6efd" : "#ebebeb",
+                    borderRadius: "15px",
+                    position: "relative",
                   }}
                 >
-                  <p>안녕하세요 ai 면접관입니다.</p>
-                  <p>*이용 가이드*</p>
-                  <p>1. 난이도 및 테마 설정 버튼 클릭</p>
-                  <p>2. 모달창안에서 난이도와 테마를 입력하면 질문 시작</p>
-                  <p>3. 잘 모르겠으면 검색란 위 힌트 버튼도 이용해보세요!</p>
-                  <p>4. 텍스트로 질문에 답변</p>
-                  <p>5. 정답 시 할당량 그래프 증가! 오답시 변동 없음</p>
-                </li>
-                {chat.map((msg, i) => (
-                  <li
-                    key={i}
+                  <p style={{ color: msg.role === "ai" ? "#000" : "#fff" }}>
+                    {msg.content}
+                  </p>
+                  <div
                     style={{
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      padding: "8px",
-                      alignSelf:
-                        msg.role === "user" ? "flex-end" : "flex-start",
-                      width: "50%",
-                      backgroundColor: "white",
-                      borderRadius: "10px",
-                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      position: "absolute",
+                      bottom: "-40px",
+                      left: msg.role === "ai" && "-20px",
+                      right: msg.role === "user" && "-10px",
                     }}
                   >
-                    <p>{msg.content}</p>
-                    <p
-                      style={{
-                        position: "absolute",
-                        bottom: "-40px",
-                        left: msg.role === "ai" && "0",
-                        right: msg.role === "user" && "0",
-                      }}
-                    >
-                      {msg.date.slice(0, 21)}
-                    </p>
-                  </li>
-                ))}
-                {loading && <li>질문 생성 중입니다...</li>}
-                <div ref={chatEndRef} />
-              </ul>
-            </div>
-            {/* 힌트, 포기, 다시하기 버튼 */}
-            <div className="d-flex gap-3 align-items-center justify-content-center my-2">
-              {buttonText.map((text) => (
-                <p
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "white",
-                    padding: "6px",
-                    borderRadius: "6px",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                  }}
-                  onClick={() => assistButtonHandler(text)}
-                >
-                  {text}
-                </p>
+                    {msg.role === "ai" && (
+                      <div
+                        className="ai-icon"
+                        style={{ position: "static" }}
+                      ></div>
+                    )}
+                    <p>{msg.date.slice(0, 21)}</p>
+                  </div>
+                </li>
               ))}
-            </div>
-            {/* 텍스트 검색 입력 버튼 */}
-            <div className="d-flex gap-2 justify-content-center">
-              <textarea
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit();
-                  }
+              {loading && <li>질문 생성 중입니다...</li>}
+              <div ref={chatEndRef} />
+            </ul>
+          </div>
+
+          {/* 텍스트 검색 입력 버튼 */}
+          <div className="d-flex gap-2 justify-content-center flex-wrap">
+            <textarea
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit();
+                }
+              }}
+              style={{
+                height: "40px",
+                borderRadius: "10px",
+                fontSize: "14px",
+                padding: "2px",
+              }}
+              value={inputText}
+              className="w-75 border-primary"
+            ></textarea>
+            <Button variant="primary" size="lg" onClick={handleSubmit}>
+              보내기
+            </Button>
+          </div>
+          {/* 힌트, 포기, 다시하기 버튼 */}
+          <div className="d-flex flex-wrap gap-3 align-items-center justify-content-center my-2">
+            {buttonText.map((text) => (
+              <p
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "#d9d9d9",
+                  color: "white",
+                  padding: "12px",
+                  borderRadius: "6px",
+                  fontSize: "12px",
+                  fontWeight: "bold",
                 }}
-                value={inputText}
-                className="w-75"
-              ></textarea>
-              <Button variant="secondary" size="lg" onClick={handleSubmit}>
-                입력
-              </Button>
-            </div>
+                onClick={() => assistButtonHandler(text)}
+              >
+                {text}
+              </p>
+            ))}
+            <p style={{ cursor: "pointer" }} onClick={() => setShowModal(true)}>
+              <FontAwesomeIcon icon={faBook} size="2xl" />
+            </p>
           </div>
         </div>
       </Container>
