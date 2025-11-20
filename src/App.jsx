@@ -3,16 +3,22 @@ import CustomNavbar from './components/Navbar/Navbar';
 import IntroMain from './pages/IntroMain/IntroMain';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import MyPage from './pages/MyPage/MyPage';
+import QuestionList from './pages/MyPage/components/QuestionList/QuestionList';
+import BookmarkList from './pages/MyPage/components/BookmarkList/BookmarkList';
 
 function App() {
   return (
-    <Router>
+    <>
       <CustomNavbar />
       <Routes>
-        {' '}
-        <Route path="/" element={<IntroMain />} />{' '}
+        <Route path='/' element={<IntroMain />} />
+        <Route path='/my' element={<MyPage />}>
+          <Route path='questions' element={<QuestionList />} />
+          <Route path='bookmarks' element={<BookmarkList />} />
+        </Route>
       </Routes>
-    </Router>
+    </>
   );
 }
 
