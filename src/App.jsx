@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import CustomNavbar from './components/Navbar/Navbar';
 import IntroMain from './pages/IntroMain/IntroMain';
+import Login from './pages/Login/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import MyPage from './pages/MyPage/MyPage';
