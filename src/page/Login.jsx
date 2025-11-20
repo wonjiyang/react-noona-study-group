@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faN } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import CryptoJS from 'crypto-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.style.css'
@@ -14,11 +13,68 @@ const Login = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isSignUp, setIsSignUp] = useState(false)
   const SECRET_KEY = 'secret-key';
+  const [isMinLength, setIsMinLength] = useState(false);
+  const [hasNumber, setHasNumber] = useState(false);
+  const [hasLower, setHasLower] = useState(false);
+  const [hasUpper, setHasUpper] = useState(false);
+  const [hasSpecial, setHasSpecial] = useState(false);
+  const [showPasswordRules, setShowPasswordRules] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const Checkmark = () => <span style={{ color: 'green', fontWeight: 'bold' }}><FontAwesomeIcon icon={faCheck} /></span>;
+  const Xmark = () => <span style={{ color: 'red', fontWeight: 'bold' }}><FontAwesomeIcon icon={faXmark} /></span>;
+
+  React.useEffect(() => {
+    setIsMinLength(password.length >= 6);
+    setHasNumber(/\d/.test(password));
+    setHasLower(/[a-z]/.test(password));
+    setHasUpper(/[A-Z]/.test(password));
+    setHasSpecial(/[!@#$%^&*(),.?":{}|<>]/.test(password));
+  }, [password]);
+
+  const renderPasswordRules = () => {
+    if (!showPasswordRules) return null;
+
+    if (isPasswordValid) {
+      return (
+        <div className='valid-password-msg'>
+          <FontAwesomeIcon icon={faCheck} /> 사용 가능한 비밀번호입니다.
+        </div>
+      );
+    } else {
+      return (
+        <div className='password-rules-msg'>
+          <small>비밀번호는 다음을 유의해 만들어주세요.<br /></small>
+          <small className={isMinLength ? "text-success" : "text-danger"}>
+            {isMinLength ? <Checkmark /> : <Xmark />} 최소 6자리 이상
+          </small><br />
+          <small className={hasNumber ? "text-success" : "text-danger"}>
+            {hasNumber ? <Checkmark /> : <Xmark />} 최소 1개의 숫자
+          </small><br />
+          <small className={hasLower ? "text-success" : "text-danger"}>
+            {hasLower ? <Checkmark /> : <Xmark />} 최소 1개의 소문자
+          </small><br />
+          <small className={hasUpper ? "text-success" : "text-danger"}>
+            {hasUpper ? <Checkmark /> : <Xmark />} 최소 1개의 대문자
+          </small><br />
+          <small className={hasSpecial ? "text-success" : "text-danger"}>
+            {hasSpecial ? <Checkmark /> : <Xmark />} 최소 1개의 특수문자
+          </small>
+        </div>
+      );
+    }
+  };
+
+  const isPasswordValid = isMinLength && hasNumber && hasLower && hasUpper && hasSpecial;
 
   const handleSignUp= (e) => {
     e.preventDefault();
     const savedUserName = localStorage.getItem("userName");
     const savedEmail = localStorage.getItem("email");
+
+    if (!isPasswordValid) {
+      alert('비밀번호 규칙을 모두 충족해야 합니다.');
+      return;
+    }
 
     if (userName === savedUserName) {
       alert("이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.");
@@ -103,18 +159,9 @@ const Login = () => {
         <Button variant="outline-primary" size="lg" type="submit" className="w-100">
           로그인
         </Button>
-      </Form>
-      <div className="or-divider">OR</div>
+      </Form>      
       <div className="mt-3 text-center">        
-        <Button variant="outline-danger" className="w-100 mb-3">
-          <FontAwesomeIcon icon={faGoogle} /> 구글계정으로 로그인
-        </Button>
-        <Button variant="outline-success" className="w-100">
-          <FontAwesomeIcon icon={faN} /> 네이버계정으로 로그인
-        </Button>
-      </div>
-      <div className="mt-3 text-center">        
-        <Button variant="outline-primary" size="lg" className="mb-3" onClick={() => setIsSignUp(true)}>
+        <Button variant="outline-secondary" size="lg" className="mb-3 w-100" onClick={() => setIsSignUp(true)}>
           회원가입
         </Button>
       </div>
@@ -130,6 +177,7 @@ const Login = () => {
                 placeholder="아이디"
                 value={userName}
                 onChange={e => setUserName(e.target.value)}
+                pattern="\S+"
                 required
               />
             </FloatingLabel>
@@ -143,16 +191,31 @@ const Login = () => {
                 required
               />
             </FloatingLabel>
-            <FloatingLabel controlId="floatingPassword" 
-            label={<><span>비밀번호</span><span className="required-star">*</span></> } className="mb-3">
-              <Form.Control
-                type="password" 
-                placeholder="비밀번호"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-            </FloatingLabel>
+            <div style={{ position: 'relative' }}>
+              <FloatingLabel
+                controlId="floatingPassword"
+                label={<><span>비밀번호</span><span className="required-star">*</span></>}
+                className="mb-3"
+              >
+                <Form.Control
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => setShowPasswordRules(true)}
+                  required
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                {renderPasswordRules()}
+              </FloatingLabel>
+
+              <div
+                onClick={() => setShowPassword(!showPassword)}
+                className='password-toggle' 
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} size="lg"/>
+              </div>
+            </div>
             <FloatingLabel controlId="floatingPasswordCheck" 
             label={<><span>비밀번호 재확인</span><span className="required-star">*</span></> } className="mb-3">
               <Form.Control
