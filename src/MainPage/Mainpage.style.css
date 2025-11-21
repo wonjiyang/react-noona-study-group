@@ -21,6 +21,7 @@ p {
   background-image: url("../assets/ai-icon.png");
   background-size: cover;
 }
+
 /* 스크롤바 숨기기 */
 .chat-scroll::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
@@ -29,8 +30,20 @@ p {
 .chat-scroll {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
+  overscroll-behavior: contain;
 }
 textarea:focus {
   border: 2px solid blue;
   outline: 0;
+}
+@media (max-width: 600px) {
+  .chat-box {
+    width: 90vw !important;
+  }
+  .chat-scroll ul {
+    gap: 50px !important;
+  }
+  .chat-scroll li {
+    width: 100% !important;
+  }
 }

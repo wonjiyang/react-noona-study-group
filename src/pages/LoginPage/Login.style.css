@@ -1,0 +1,35 @@
+h2 {
+  text-align: center;
+  font-weight: 800;
+  color: #2564f8;
+  margin-bottom: 30px
+}
+
+.required-star {
+  color: red;
+  margin-left: 4px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d
+}
+
+div>.valid-password-msg {
+  margin-top: 13px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  color: green;
+  font-size: small;
+}
+
+div>.password-rules-msg {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  color: #6c757d;
+}
