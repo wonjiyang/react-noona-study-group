@@ -221,8 +221,7 @@ const MainPage = () => {
                   6. 빨리 진행하고 싶다면 빠른 질문받기 버튼 (랜덤으로 질문
                   생성)
                 </p>
-                <div>
-                  {" "}
+                <div className="ai-icon">
                   <FontAwesomeIcon icon={faRobot} className="icon" />
                 </div>
               </li>
@@ -257,10 +256,10 @@ const MainPage = () => {
                     }}
                   >
                     {msg.role === "ai" && (
-                      <div
-                        className="ai-icon"
-                        style={{ position: "static" }}
-                      ></div>
+                      <div className="ai-icon" style={{ position: "static" }}>
+                        {" "}
+                        <FontAwesomeIcon icon={faRobot} className="icon" />
+                      </div>
                     )}
                     <p style={{ color: "#989898", fontSize: "10px" }}>
                       {msg.date}
