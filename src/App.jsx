@@ -1,7 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import CustomNavbar from './components/Navbar/Navbar';
 import IntroMain from './pages/IntroMain/IntroMain';
-import LoginPage from './pages/LoginPage/LoginPage';
+import LoginPage from './pages/LoginPage/Login';
 import MyPage from './pages/MyPage/MyPage';
 import MainPage from './pages/MainPage/MainPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
