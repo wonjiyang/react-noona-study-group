@@ -5,22 +5,20 @@ import './Navbar.style.css';
 import { Link } from 'react-router-dom';
 
 const CustomNavbar = () => {
-  const navigate = useNavigate();
-
   return (
-    <Navbar bg="primary" className="navbar" variant="dark">
+    <Navbar bg='primary' className='navbar' variant='dark'>
       <Container>
-        <Navbar.Brand as={Link} to="/" className="navbar-brand">
+        <Navbar.Brand as={Link} to='/' className='navbar-brand'>
           mentorMe
         </Navbar.Brand>
-        <Nav className="navbar-nav">
+        <Nav className='navbar-nav'>
           <Nav.Item>
-            <Nav.Link as={Link} to="/my/bookmarks" className="nav-link">
+            <Nav.Link as={Link} to='/my/bookmarks' className='nav-link' style={{ color: 'white' }}>
               <FontAwesomeIcon icon={faBookmark} /> 북마크
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link as={Link} to="/login" className="nav-link">
+            <Nav.Link as={Link} to='/login' className='nav-link' style={{ color: 'white' }}>
               <FontAwesomeIcon icon={faUser} /> 로그인
             </Nav.Link>
           </Nav.Item>
