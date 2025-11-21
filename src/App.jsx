@@ -21,6 +21,7 @@ function App() {
           <Route path="questions" element={<QuestionList />} />
           <Route path="bookmarks" element={<BookmarkList />} />
         </Route>
+        <Route path="/main-page" element={<MainPage />} />
       </Routes>
     </>
   );
