@@ -1,13 +1,13 @@
 // src/hooks/useChatbot.js
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 const useChatbot = () => {
   // 상태 관리
-  const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState('');
   const [chat, setChat] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [level, setLevel] = useState("");
-  const [subject, setSubject] = useState("");
+  const [level, setLevel] = useState('');
+  const [subject, setSubject] = useState('');
 
   const submitQuestion = useCallback(
     async (prompt) => {
@@ -15,20 +15,20 @@ const useChatbot = () => {
       if (!userInput.trim()) return;
 
       const userMessage = {
-        role: "user",
+        role: 'user',
         content: userInput,
-        date: new Date().toLocaleString("ko-KR"),
+        date: new Date().toLocaleString('ko-KR'),
         theme: subject,
         level: level,
       };
 
       setChat((prev) => [...prev, userMessage]);
       setLoading(true);
-      setQuestion("");
+      setQuestion('');
 
       // 랜덤 난이도/과목 설정
-      const ranLe = ["상", "중", "하"];
-      const ranSub = ["HTML", "CSS", "JAVASCRIPT", "REACT"];
+      const ranLe = ['상', '중', '하'];
+      const ranSub = ['HTML', 'CSS', 'JAVASCRIPT', 'REACT'];
       const randomLevel = ranLe[Math.floor(Math.random() * ranLe.length)];
       const randomSubject = ranSub[Math.floor(Math.random() * ranSub.length)];
 
@@ -50,11 +50,11 @@ const useChatbot = () => {
                      면접자가 면접질문을 하기 전까지 면접 질문하지 않는다`;
 
       const hintInstruction =
-        "면접 문제에 대한 힌트를 아주 간단히 제공한다. 문제를 직접 말하지 않는다.";
+        '면접 문제에 대한 힌트를 아주 간단히 제공한다. 문제를 직접 말하지 않는다.';
 
       let systemInstruction;
 
-      if (userInput.includes("힌트")) {
+      if (userInput.includes('힌트')) {
         systemInstruction = hintInstruction;
       } else {
         systemInstruction = aiRes;
@@ -62,20 +62,20 @@ const useChatbot = () => {
 
       // 채팅 구성
       const contents = [
-        { role: "user", parts: [{ text: systemInstruction }] },
+        { role: 'user', parts: [{ text: systemInstruction }] },
         ...chat.map((msg) => ({
-          role: msg.role === "ai" ? "model" : "user",
+          role: msg.role === 'ai' ? 'model' : 'user',
           parts: [{ text: msg.content }],
         })),
-        { role: "user", parts: [{ text: userMessage.content }] },
+        { role: 'user', parts: [{ text: userMessage.content }] },
       ];
 
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
       const requestOption = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents }),
       };
 
@@ -85,22 +85,22 @@ const useChatbot = () => {
 
         const aiText =
           data.candidates?.[0]?.content?.parts?.[0]?.text ||
-          "응답을 받을 수 없습니다.";
+          '응답을 받을 수 없습니다.';
 
         const aiMessage = {
-          role: "ai",
+          role: 'ai',
           content: aiText,
-          date: new Date().toLocaleString("ko-KR"),
+          date: new Date().toLocaleString('ko-KR'),
         };
 
         setChat((prev) => [...prev, aiMessage]);
       } catch (err) {
-        console.error("API Error:", err);
+        console.error('API Error:', err);
         setChat((prev) => [
           ...prev,
           {
-            role: "ai",
-            content: "죄송합니다. 질문 처리 중 오류가 발생했습니다.",
+            role: 'ai',
+            content: '죄송합니다. 질문 처리 중 오류가 발생했습니다.',
           },
         ]);
       } finally {
@@ -114,9 +114,9 @@ const useChatbot = () => {
   const answers = chat
     .filter(
       (msg) =>
-        msg.role === "ai" &&
-        msg.content.includes("정답여부:") &&
-        msg.content.includes("난이도:")
+        msg.role === 'ai' &&
+        msg.content.includes('정답여부:') &&
+        msg.content.includes('난이도:')
     )
     .map((msg) => {
       const lines = msg.content.split(/\n/).map((line) => line.trim());
@@ -135,7 +135,7 @@ const useChatbot = () => {
           obj.subject = line.replace("테마:", "").trim();
       });
 
-      obj.date = new Date(msg.date).toLocaleString("ko-KR");
+      obj.date = new Date(msg.date).toLocaleString('ko-KR');
       return obj;
     });
 
