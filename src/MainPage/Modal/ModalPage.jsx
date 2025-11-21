@@ -12,10 +12,16 @@ const ModalPage = ({
   setLevel,
   setSubject,
   submitQuestion,
+  quota,
+  setQuota,
 }) => {
   const subjectHandler = (e) => setSubject(e.target.dataset.subject);
 
   const selectThemeLevel = () => {
+    if (quota <= 0) {
+      alert("할당량을 지정해주세요.");
+      return;
+    }
     submitQuestion(`난이도는 ${level}, 테마는 ${subject}로 면접 질문주세요`);
     setLevel();
     setSubject();
@@ -56,7 +62,7 @@ const ModalPage = ({
           />
         </div>
         <h5 className="px-5">기술언어를 선택해주세요</h5>
-        <div className="d-flex flex-wrap align-items-center justify-content-between px-5">
+        <div className="d-flex flex-wrap align-items-center justify-content-between px-5 my-3">
           {" "}
           {["HTML", "CSS", "JAVASCRIPT", "REACT"].map((sub) => (
             <span
@@ -73,8 +79,16 @@ const ModalPage = ({
             </span>
           ))}
         </div>
+        <h5 className="px-5">일일 할당량을 입력해주세요</h5>
+        <div className="px-5">
+          <Form.Control
+            size="sm"
+            value={quota}
+            type="number"
+            onChange={(e) => setQuota(Number(e.target.value))}
+          />
+        </div>
       </Modal.Body>
-
       <Modal.Footer>
         <Button variant="primary" onClick={selectThemeLevel}>
           전송

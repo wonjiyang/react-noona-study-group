@@ -9,8 +9,7 @@ import ModalPage from "./Modal/ModalPage";
 
 const MainPage = () => {
   // 예)임의 할당량
-  const quota = 3;
-  const [quo, setQuo] = useState(1);
+  const [quota, setQuota] = useState(0);
   //   텍스트
   const [inputText, setInputText] = useState("");
   //  자동 스크롤 및 부모 스크롤 고정
@@ -23,7 +22,6 @@ const MainPage = () => {
 
   //   hooks로 api로직 분리
   const {
-    answers,
     setChat,
     setQuestion,
     chat,
@@ -56,15 +54,16 @@ const MainPage = () => {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [chat, loading]);
-  useEffect(() => {
-    console.log(answers);
-  }, [answers]);
 
   // 일일할당량별 메시지
   useEffect(() => {
-    const percent = Math.floor((answerGraph.length / quota) * 100);
+    const percent = Math.floor((answerGraph.length / Number(quota)) * 100);
     if (percent >= 100) {
       setMsg("100% 달성! 축하드려요");
+      if (window.confirm("100% 달성! 축하드려요 다시 시작하시겠습니까?")) {
+        setQuota(0);
+        setChat([]);
+      }
     } else if (percent >= 80) {
       setMsg("이제 얼마 남지 않았어요 조금만 더!");
     } else if (percent >= 50) {
@@ -74,9 +73,13 @@ const MainPage = () => {
     } else {
       setMsg("이제 시작해보자!");
     }
-  }, [answerGraph.length]);
+  }, [answerGraph.length, quota]);
 
   const assistButtonHandler = (text) => {
+    if (quota <= 0) {
+      alert("먼저 일일 할당량 먼저 선택해주세요");
+      return;
+    }
     // 힌트 ,포기, 질문 클릭시
     if (
       text.includes("힌트") ||
@@ -102,7 +105,7 @@ const MainPage = () => {
     setInputText("");
   };
   return (
-    <Container>
+    <Container className="chat-container">
       {/* 컨테이너 */}
       <div
         className="chat-box"
@@ -130,7 +133,12 @@ const MainPage = () => {
             <p style={{ fontSize: "15px", fontWeight: "bold" }}>
               오늘 할당량 목표
             </p>
-            <p>{Math.floor((answerGraph.length * 100) / quota)}%</p>
+            <p>
+              {quota === 0
+                ? 0
+                : Math.floor((answerGraph.length * 100) / Number(quota))}
+              %
+            </p>
           </div>
           <div className="d-flex justify-content-between align-items-center">
             <div
@@ -146,7 +154,10 @@ const MainPage = () => {
                 className="bg-primary"
                 style={{
                   height: "100%",
-                  width: answerGraph.length * (100 / quota) + "%",
+                  width:
+                    quota > 0
+                      ? (answerGraph.length * 100) / Number(quota) + "%"
+                      : "0%",
                   borderRadius: "20px",
                   position: "relative",
                 }}
@@ -162,7 +173,12 @@ const MainPage = () => {
               fontWeight: "bold",
             }}
           >
-            <p style={{ fontSize: "10px" }}>목표 다시 설정하기 &gt;</p>
+            <p
+              style={{ fontSize: "10px", cursor: "pointer" }}
+              onClick={() => setShowModal(true)}
+            >
+              목표 다시 설정하기 &gt;
+            </p>
             <p style={{ fontSize: "12px" }}>{msg}</p>
           </div>
         </div>
@@ -330,6 +346,8 @@ const MainPage = () => {
           handleClose={() => setShowModal(false)}
           level={level}
           subject={subject}
+          quota={quota}
+          setQuota={setQuota}
           setLevel={setLevel}
           setSubject={setSubject}
           submitQuestion={submitQuestion}
