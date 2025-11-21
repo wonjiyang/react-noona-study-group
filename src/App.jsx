@@ -14,11 +14,12 @@ function App() {
       <CustomNavbar />
       <Routes>
         <Route path="/" element={<IntroMain />} />
-        <Route path="/main-page" element={<MainPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/my" element={<MyPage />}>
           <Route path="questions" element={<QuestionList />} />
           <Route path="bookmarks" element={<BookmarkList />} />
         </Route>
+        <Route path="/main-page" element={<MainPage />} />
       </Routes>
     </>
   );
