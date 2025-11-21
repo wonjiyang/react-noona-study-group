@@ -5,8 +5,6 @@ import "./Navbar.style.css";
 import { Link } from "react-router-dom";
 
 const CustomNavbar = () => {
-  // const navigate = useNavigate();
-
   return (
     <Navbar bg="primary" className="navbar" variant="dark">
       <Container>
