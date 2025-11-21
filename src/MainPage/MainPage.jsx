@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
-import { Container, Button } from "react-bootstrap";
+import { faBook, faRobot } from "@fortawesome/free-solid-svg-icons";
+import { Container, Button, Spinner } from "react-bootstrap";
 import "./MainPage.style.css";
 import useChatbot from "../hooks/useChatbot";
 import ModalPage from "./Modal/ModalPage";
 
 const MainPage = () => {
   // 예)임의 할당량
-  const quota = 5;
+  const quota = 3;
+  const [quo, setQuo] = useState(1);
   //   텍스트
   const [inputText, setInputText] = useState("");
-  // 자동 스크롤
-  const chatEndRef = useRef(null);
+  //  자동 스크롤 및 부모 스크롤 고정
+  const chatBoxRef = useRef(null);
+
   // 모달창 설정
   const [showModal, setShowModal] = useState(false);
   //   달성률 메시지, 메시지 모달
@@ -32,7 +34,12 @@ const MainPage = () => {
     setSubject,
     submitQuestion,
   } = useChatbot();
-  const buttonText = ["질문받기", "힌트받기", "포기하기", "처음부터 다시시작"];
+  const buttonText = [
+    "빠른 질문받기",
+    "힌트받기",
+    "포기하기",
+    "처음부터 다시시작",
+  ];
 
   //   일일할당량 게이지
   let answerGraph = chat
@@ -45,8 +52,8 @@ const MainPage = () => {
     .filter((el) => el.role === "ai");
 
   useEffect(() => {
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [chat, loading]);
   useEffect(() => {
@@ -70,39 +77,43 @@ const MainPage = () => {
   }, [answerGraph.length]);
 
   const assistButtonHandler = (text) => {
-    // 힌트 클릭시
-    if (text.includes("힌트")) {
+    // 힌트 ,포기, 질문 클릭시
+    if (
+      text.includes("힌트") ||
+      text.includes("포기") ||
+      text.includes("질문")
+    ) {
       submitQuestion(text);
       return;
     }
 
-    //"포기" 또는 "다시시작" 버튼 로직
-    if (text.includes("포기") || text.includes("다시시작")) {
-      if (
-        window.confirm(
-          `정말로 "${
-            text.includes("포기") ? "포기" : "다시시작"
-          }" 하시겠습니까?`
-        )
-      ) {
+    //"다시시작" 클릭시
+    if (text.includes("다시시작")) {
+      if (window.confirm(`정말로 다시시작 하시겠습니까?`)) {
         setQuestion(text);
         setChat([]);
       }
     }
   };
+
   const handleSubmit = () => {
     if (!inputText.trim()) return;
     submitQuestion(inputText);
     setInputText("");
   };
   return (
-    <>
+    <Container>
       {/* 컨테이너 */}
-      <Container style={{ maxWidth: "600px", margin: "50px auto" }}>
+      <div
+        className="chat-box"
+        style={{
+          width: "47vw",
+          margin: "90px auto",
+        }}
+      >
         {/* 일일 할당량, 그래프 박스 */}
         <div
           style={{
-            minWidth: "350px",
             width: "100%",
             backgroundColor: "#fff",
             padding: "10px",
@@ -160,8 +171,7 @@ const MainPage = () => {
         <div
           style={{
             width: "100%",
-            minWidth: "360px",
-            margin: "50px 0",
+            margin: "30px 0",
             backgroundColor: "#fff",
             borderRadius: "20px",
             padding: "20px",
@@ -169,9 +179,10 @@ const MainPage = () => {
         >
           {/* 챗봇 박스 */}
           <div
+            ref={chatBoxRef}
             style={{
               width: "90%",
-              height: "400px",
+              height: "350px",
               margin: "auto",
               overflowY: "scroll",
               padding: "20px",
@@ -206,10 +217,18 @@ const MainPage = () => {
                 <p>3. 잘 모르겠으면 검색란 아래 힌트 버튼도 이용해보세요!</p>
                 <p>4. 텍스트로 질문에 답변</p>
                 <p>5. 정답 시 할당량 그래프 증가!</p>
-                <div className="ai-icon"></div>
+                <p>
+                  6. 빨리 진행하고 싶다면 빠른 질문받기 버튼 (랜덤으로 질문
+                  생성)
+                </p>
+                <div>
+                  {" "}
+                  <FontAwesomeIcon icon={faRobot} className="icon" />
+                </div>
               </li>
               {chat.map((msg, i) => (
                 <li
+                  className="chat-text"
                   key={i}
                   style={{
                     fontSize: "12px",
@@ -232,7 +251,7 @@ const MainPage = () => {
                       alignItems: "center",
                       gap: "4px",
                       position: "absolute",
-                      bottom: "-40px",
+                      bottom: msg.role === "ai" ? "-40px" : "-30px",
                       left: msg.role === "ai" && "-20px",
                       right: msg.role === "user" && "-10px",
                     }}
@@ -243,17 +262,23 @@ const MainPage = () => {
                         style={{ position: "static" }}
                       ></div>
                     )}
-                    <p>{msg.date.slice(0, 21)}</p>
+                    <p style={{ color: "#989898", fontSize: "10px" }}>
+                      {msg.date}
+                    </p>
                   </div>
                 </li>
               ))}
-              {loading && <li>질문 생성 중입니다...</li>}
-              <div ref={chatEndRef} />
+              {loading && (
+                <li>
+                  {" "}
+                  <Spinner animation="border" variant="primary" />
+                </li>
+              )}
             </ul>
           </div>
 
           {/* 텍스트 검색 입력 버튼 */}
-          <div className="d-flex gap-2 justify-content-center flex-wrap">
+          <div className="d-flex gap-2 justify-content-center flex-wrap my-2">
             <textarea
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => {
@@ -298,7 +323,7 @@ const MainPage = () => {
             </p>
           </div>
         </div>
-      </Container>
+      </div>
       {/* 모달 생성 컴포넌트 */}
       {showModal && (
         <ModalPage
@@ -311,7 +336,7 @@ const MainPage = () => {
           submitQuestion={submitQuestion}
         />
       )}
-    </>
+    </Container>
   );
 };
 

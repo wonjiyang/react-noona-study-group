@@ -4,30 +4,31 @@
 }
 
 .navbar {
-  height: 60px;
+  height: 8vh;
   position: fixed !important;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 10;
+  padding: 0 5%;
 }
 
 .navbar-brand {
-  font-size: 26px !important;
+  font-size: 1.2em !important;
   font-weight: bold;
 }
 
 .nav-link {
-  color: white !important;
-  font-size: 16px;
+  color: white;
+  font-size: 0.8em !important;
   display: flex;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 1vw;
 }
 
 .nav-link svg {
-  margin-right: 4px;
-  font-size: 18px;
+  margin-right: 0.2vw;
+  font-size: 1.2em !important;
 }
 
 .navbar-nav {
@@ -36,60 +37,63 @@
 
 @media (max-width: 1024px) {
   .navbar {
-    height: 55px;
-    padding: 0 15px !important;
-  }
-
-  .navbar-brand {
-    font-size: 22px !important;
+    height: 7vh;
+    padding: 0 4%;
   }
 
   .nav-link {
-    font-size: 15px;
-    margin-left: 15px;
+    margin-left: 1.5vw;
+    font-size: 0.7em !important;
   }
 
   .nav-link svg {
-    font-size: 16px;
+    margin-right: 0.3vw;
   }
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    height: 50px;
-    padding: 0 24px !important;
+  .container {
+    width: 100%;
+    margin: 0 4.5vw !important;
+    max-width: none !important;
   }
-
-  .navbar-brand {
-    font-size: 20px !important;
+  .navbar {
+    height: 6vh;
+    padding: 0 4%;
   }
 
   .nav-link {
-    font-size: 14px;
-    margin-left: 12px;
+    margin-left: 1.2vw;
+    font-size: 0.7em !important;
   }
 
   .nav-link svg {
-    font-size: 15px;
-    margin-right: 3px;
+    margin-right: 0.3vw;
   }
 }
 
+@media (max-width: 680px) {
+  .nav-link {
+    font-size: 1.8vw !important;
+  }
+}
 @media (max-width: 480px) {
   .navbar {
-    height: 48px;
+    height: 6vh;
+    padding: 0 3%;
   }
 
   .navbar-brand {
-    font-size: 18px !important;
+    font-size: 1em !important;
   }
 
   .nav-link {
-    font-size: 13px;
-    margin-left: 10px;
+    margin-left: 1vw;
+    font-size: 0.7em !important;
   }
 
   .nav-link svg {
-    font-size: 14px;
+    margin-right: 0.3vw;
+    font-size: 1em !important;
   }
 }
