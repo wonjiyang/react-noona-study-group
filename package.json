@@ -9,9 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "engines": {
-    "node": "18.x"
-  },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
