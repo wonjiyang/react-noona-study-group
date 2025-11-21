@@ -1,11 +1,11 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faUser } from '@fortawesome/free-solid-svg-icons';
-import './Navbar.style.css';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark, faUser } from "@fortawesome/free-solid-svg-icons";
+import "./Navbar.style.css";
+import { Link } from "react-router-dom";
 
 const CustomNavbar = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <Navbar bg="primary" className="navbar" variant="dark">

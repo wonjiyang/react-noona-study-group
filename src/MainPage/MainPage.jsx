@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faRobot } from "@fortawesome/free-solid-svg-icons";
 import { Container, Button, Spinner } from "react-bootstrap";
-import "./MainPage.style.css";
+import "./Mainpage.style.css";
 import useChatbot from "../hooks/useChatbot";
 import ModalPage from "./Modal/ModalPage";
 
