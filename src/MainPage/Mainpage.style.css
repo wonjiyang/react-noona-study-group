@@ -24,6 +24,9 @@ p {
   align-items: center;
   background-size: cover;
 }
+.chat-container {
+  margin: 0 auto !important;
+}
 
 /* 스크롤바 숨기기 */
 .chat-scroll::-webkit-scrollbar {
@@ -39,6 +42,12 @@ textarea:focus {
   border: 2px solid blue;
   outline: 0;
 }
+@media (max-width: 1024px) {
+  .chat-box {
+    width: 70vw !important;
+  }
+}
+
 @media (max-width: 600px) {
   .chat-box {
     width: 90vw !important;

@@ -1,10 +1,15 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faUser } from "@fortawesome/free-solid-svg-icons";
-import "./Navbar.style.css";
-import { Link } from "react-router-dom";
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark, faUser } from '@fortawesome/free-solid-svg-icons';
+import './Navbar.style.css';
+import { Link, useNavigate } from 'react-router-dom';
 
-const CustomNavbar = () => {
+const CustomNavbar = ({ isLoggedIn, onLogout }) => {
+  const navigate = useNavigate();
+  const handleLogoutClick = () => {
+    onLogout();
+    navigate('/');
+  };
   return (
     <Navbar bg='primary' className='navbar' variant='dark'>
       <Container>
@@ -18,8 +23,12 @@ const CustomNavbar = () => {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link as={Link} to='/login' className='nav-link' style={{ color: 'white' }}>
-              <FontAwesomeIcon icon={faUser} /> 로그인
+            <Nav.Link 
+              as="span" 
+              onClick={isLoggedIn ? handleLogoutClick : () => navigate('/login')} 
+              style={{ cursor: 'pointer' }}
+            >
+              <FontAwesomeIcon icon={faUser} /> {isLoggedIn ? '로그아웃' : '로그인'}
             </Nav.Link>
           </Nav.Item>
         </Nav>
