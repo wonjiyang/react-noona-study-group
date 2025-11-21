@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faRobot } from '@fortawesome/free-solid-svg-icons';
-import { Container, Button, Spinner } from 'react-bootstrap';
-import './Mainpage.style.css';
-import useChatbot from '../hooks/useChatbot';
-import ModalPage from './Modal/ModalPage';
+import React, { useEffect, useRef, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faRobot } from "@fortawesome/free-solid-svg-icons";
+import { Container, Button, Spinner } from "react-bootstrap";
+import "./Mainpage.style.css";
+import useChatbot from "../hooks/useChatbot";
+import ModalPage from "./Modal/ModalPage";
 
 const MainPage = () => {
   // 예)임의 할당량
@@ -221,8 +221,7 @@ const MainPage = () => {
                   6. 빨리 진행하고 싶다면 빠른 질문받기 버튼 (랜덤으로 질문
                   생성)
                 </p>
-                <div>
-                  {' '}
+                <div className="ai-icon">
                   <FontAwesomeIcon icon={faRobot} className="icon" />
                 </div>
               </li>
@@ -256,11 +255,11 @@ const MainPage = () => {
                       right: msg.role === 'user' && '-10px',
                     }}
                   >
-                    {msg.role === 'ai' && (
-                      <div
-                        className="ai-icon"
-                        style={{ position: 'static' }}
-                      ></div>
+                    {msg.role === "ai" && (
+                      <div className="ai-icon" style={{ position: "static" }}>
+                        {" "}
+                        <FontAwesomeIcon icon={faRobot} className="icon" />
+                      </div>
                     )}
                     <p style={{ color: '#989898', fontSize: '10px' }}>
                       {msg.date}
