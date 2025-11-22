@@ -125,6 +125,12 @@ const useChatbot = () => {
       return obj;
     });
 
+  useEffect(() => {
+    if (answers.length > 0) {
+      addQuestions(answers);
+    }
+  }, [chat, addQuestions]);
+
   return {
     answers,
     question,

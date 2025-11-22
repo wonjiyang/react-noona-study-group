@@ -7,14 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const QuestionList = () => {
   const { questions } = useQuestionStore();
+
   const { bookmarks, addBookmark, deleteBookmark } = useBookmarkStore();
 
   const handleAddBookmark = (question) => {
     addBookmark(question);
   };
 
-  const handleDeleteBookmark = (questionId) => {
-    deleteBookmark(questionId);
+  const handleDeleteBookmark = (question) => {
+    deleteBookmark(question);
   };
 
   return (
@@ -31,7 +32,7 @@ const QuestionList = () => {
               </div>
               <div className='d-flex align-items-center'>
                 <p className='ps-3 mb-0' style={{ color: '#BCBCBC', fontSize: '12px' }}>
-                  {question.createdAt}
+                  {question.date}
                 </p>
                 {isBookmarked ? (
                   <Button

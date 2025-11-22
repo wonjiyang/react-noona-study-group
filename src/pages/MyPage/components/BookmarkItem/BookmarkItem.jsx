@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
 
 const BookmarkItem = ({ bookmark, handleDeleteBookMark }) => {
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   return (
     <ListGroup.Item className='border-0 rounded-0 border-bottom pb-2' as='li' key={bookmark.id}>
@@ -12,28 +12,24 @@ const BookmarkItem = ({ bookmark, handleDeleteBookMark }) => {
         <span className='text-primary fw-bold'>Q.</span>
         <p className='ps-3 mb-0'>{bookmark.question}</p>
       </div>
-      <div className='mb-3'>
-        <span className='text-primary fw-bold'>A.</span>
-        <p className='ps-3 mb-0'>{bookmark.expectedAnswer}</p>
-      </div>
-      {showExplanation && (
+      {showAnswer && (
         <div className='mb-3'>
-          <span className='text-primary fw-bold'>E.</span>
-          <p className='ps-3 mb-0'>{bookmark.explanation}</p>
+          <span className='text-primary fw-bold'>A.</span>
+          <p className='ps-3 mb-0'>{bookmark.answer}</p>
         </div>
       )}
       <div className='d-flex align-items-center'>
         <p className='ps-3 mb-0' style={{ color: '#BCBCBC', fontSize: '12px' }}>
-          {bookmark.createdAt}
+          {bookmark.date}
         </p>
         <div className='d-flex gap-3 ms-auto'>
           <Button
             className='p-0 ps-3 pe-3 rounded-pill'
             variant='primary'
             style={{ fontSize: '12px' }}
-            onClick={() => setShowExplanation(!showExplanation)}
+            onClick={() => setShowAnswer(!showAnswer)}
           >
-            해설보기
+            정답보기
           </Button>
           <Button
             className='border-0 bg-transparent d-block p-0'
