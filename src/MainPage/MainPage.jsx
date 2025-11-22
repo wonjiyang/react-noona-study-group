@@ -22,6 +22,8 @@ const MainPage = () => {
 
   //   hooks로 api로직 분리
   const {
+    setVersion,
+    version,
     setChat,
     setQuestion,
     chat,
@@ -39,7 +41,7 @@ const MainPage = () => {
     "포기하기",
     "처음부터 다시시작",
   ];
-
+  console.log(chat);
   //   일일할당량 게이지
   let answerGraph = chat
     .filter(
@@ -361,6 +363,7 @@ const MainPage = () => {
           setLevel={setLevel}
           setSubject={setSubject}
           submitQuestion={submitQuestion}
+          setVersion={setVersion}
         />
       )}
     </Container>
