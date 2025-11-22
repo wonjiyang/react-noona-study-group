@@ -136,7 +136,10 @@ const MainPage = () => {
             <p>
               {quota === 0
                 ? 0
-                : Math.floor((answerGraph.length * 100) / Number(quota))}
+                : Math.min(
+                    Math.floor((answerGraph.length * 100) / Number(quota)),
+                    100
+                  )}
               %
             </p>
           </div>
@@ -156,10 +159,14 @@ const MainPage = () => {
                   height: "100%",
                   width:
                     quota > 0
-                      ? (answerGraph.length * 100) / Number(quota) + "%"
+                      ? Math.min(
+                          Math.floor(
+                            (answerGraph.length * 100) / Number(quota)
+                          ),
+                          100
+                        ) + "%"
                       : "0%",
                   borderRadius: "20px",
-                  position: "relative",
                 }}
               ></div>
             </div>
@@ -258,7 +265,9 @@ const MainPage = () => {
                   }}
                 >
                   <p style={{ color: msg.role === "ai" ? "#000" : "#fff" }}>
-                    {msg.content}
+                    {msg.content.split("\n").map((line, index) => (
+                      <p key={index}>{line}</p>
+                    ))}
                   </p>
                   <div
                     style={{
@@ -278,7 +287,7 @@ const MainPage = () => {
                       </div>
                     )}
                     <p style={{ color: "#989898", fontSize: "10px" }}>
-                      {msg.date}
+                      {msg.date.toLocaleString("ko-KR")}
                     </p>
                   </div>
                 </li>
