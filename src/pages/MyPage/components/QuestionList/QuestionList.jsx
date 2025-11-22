@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const QuestionList = () => {
   const { questions } = useQuestionStore();
-  console.log('🚀 ~ QuestionList ~ questions:', questions);
 
   const { bookmarks, addBookmark, deleteBookmark } = useBookmarkStore();
 

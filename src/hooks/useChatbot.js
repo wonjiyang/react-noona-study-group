@@ -10,7 +10,7 @@ const useChatbot = () => {
   const [level, setLevel] = useState('');
   const [subject, setSubject] = useState('');
 
-  const { setQuestions } = useQuestionStore();
+  const { addQuestions } = useQuestionStore();
 
   const submitQuestion = useCallback(
     async (prompt) => {
@@ -131,8 +131,10 @@ const useChatbot = () => {
     });
 
   useEffect(() => {
-    setQuestions(answers);
-  }, [chat]);
+    if (answers.length > 0) {
+      addQuestions(answers);
+    }
+  }, [chat, addQuestions]);
 
   return {
     answers,
