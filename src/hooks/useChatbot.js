@@ -1,5 +1,6 @@
 // src/hooks/useChatbot.js
 import { useState, useEffect } from "react";
+import { useQuestionStore } from "../store/useQuestionStore";
 
 const useChatbot = () => {
   const [question, setQuestion] = useState("");
@@ -7,6 +8,8 @@ const useChatbot = () => {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState("");
   const [subject, setSubject] = useState("");
+
+  const { addQuestions } = useQuestionStore();
 
   const ranLevels = ["상", "중", "하"];
   const ranSubjects = ["HTML", "CSS", "JAVASCRIPT", "REACT"];
