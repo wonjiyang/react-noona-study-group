@@ -5,15 +5,15 @@ import BookmarkItem from '../BookmarkItem/BookmarkItem';
 const BookmarkList = () => {
   const { bookmarks, deleteBookmark } = useBookmarkStore();
 
-  const handleDeleteBookMark = (id) => {
-    deleteBookmark(id);
+  const handleDeleteBookMark = (question) => {
+    deleteBookmark(question);
   };
 
   return (
     <ListGroup as='ul' style={{ padding: '8px 16px' }}>
       {bookmarks.length ? (
         bookmarks.map((bookmark) => {
-          return <BookmarkItem key={bookmark.id} bookmark={bookmark} handleDeleteBookMark={handleDeleteBookMark} />;
+          return <BookmarkItem key={bookmark.question} bookmark={bookmark} handleDeleteBookMark={handleDeleteBookMark} />;
         })
       ) : (
         <ListGroup.Item className='border-0 rounded-0 border-bottom pb-2' as='li'>

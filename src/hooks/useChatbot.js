@@ -1,5 +1,5 @@
 // src/hooks/useChatbot.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const useChatbot = () => {
   const [question, setQuestion] = useState("");
@@ -124,6 +124,12 @@ const useChatbot = () => {
       obj.date = new Date(msg.date);
       return obj;
     });
+
+  useEffect(() => {
+    if (answers.length > 0) {
+      addQuestions(answers);
+    }
+  }, [chat, addQuestions]);
 
   return {
     answers,
