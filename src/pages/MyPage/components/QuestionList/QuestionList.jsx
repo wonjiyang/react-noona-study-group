@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Button, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { useQuestionStore } from '../../../../store/useQuestionStore';
 import { useBookmarkStore } from '../../../../store/useBookmarkStore';
@@ -28,6 +28,11 @@ const QuestionList = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') handleSearch();
+  };
+
+  const handleDeleteQuestionAndBookmark = (id) => {
+    deleteQuestion(id);
+    deleteBookmark(id);
   };
 
   return (
@@ -121,7 +126,7 @@ const QuestionList = () => {
                       className='p-0 ps-3 pe-3 rounded-pill'
                       variant='primary'
                       style={{ fontSize: '12px' }}
-                      onClick={() => deleteQuestion(question.id)}
+                      onClick={() => handleDeleteQuestionAndBookmark(question.id)}
                     >
                       삭제하기
                     </Button>
