@@ -17,9 +17,13 @@ export const useQuestionStore = create(
 
           return state;
         }),
+      deleteQuestion: (questionId) =>
+        set((state) => ({
+          questions: state.questions.filter((question) => question.id !== questionId),
+        })),
     }),
     {
-      name: 'question-storage',
+      name: 'questions',
     }
   )
 );
