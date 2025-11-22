@@ -1,0 +1,83 @@
+.white-background {
+  width: 70%;
+  max-width: 600px;
+  min-width: 280px;
+  background-color: #fff;
+  margin: 60px auto 0;
+  max-height: 75vh;
+  border-radius: 10px;
+  padding: 4vh 3%;
+  overflow-y: auto;
+  margin-top: 6.5vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1em;
+  font-weight: 800;
+  color: #2564f8;
+  margin-bottom: 12px;
+}
+
+.loginSignupText::placeholder {
+  font-size: 0.6em;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 0.8em;
+}
+
+.required-star {
+  color: red;
+  margin-left: 4px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+}
+
+div > .valid-password-msg {
+  margin-top: 10px;
+
+  margin-left: 10px;
+  font-size: small;
+  color: green;
+  font-size: small;
+}
+
+div > .invalid-password-msg {
+  margin-top: 10px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  color: #e23946;
+  font-size: small;
+}
+
+div > .password-rules-msg {
+  margin-top: 10px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  color: #6c757d;
+  font-size: small;
+}
+
+@media (max-width: 480px) {
+  .white-background {
+    width: 100%;
+  }
+}
