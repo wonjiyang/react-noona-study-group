@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
-import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, Container, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import CryptoJS from 'crypto-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.style.css';
 import { useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const SECRET_KEY = 'secret-key';
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
+  
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (modalMessage.includes('환영합니다')) {
+    navigate('/main-page');
+  }
+  } 
 
   const handleLogin = (e) => {
     e.preventDefault();
     const savedUserName = localStorage.getItem('userName');
     const savedEmail = localStorage.getItem('email');
     const encryptedPassword = localStorage.getItem('password');
-    
+
     if (!encryptedPassword) {
-      alert('이메일 또는 비밀번호가 다릅니다.');
+      setModalMessage('이메일 또는 비밀번호가 다릅니다.');
+      setShowModal(true);
       setEmail('');
       setPassword('');
       return;
@@ -33,11 +44,12 @@ const Login = ({ onLogin }) => {
 
     if (email === savedEmail && password === decryptedPassword) {
       localStorage.setItem('isLoggedIn', 'true');
-      alert(`🎉 ${savedUserName}님, 환영합니다.`);
+      setModalMessage(`🎉 ${savedUserName}님, 환영합니다.`);
+      setShowModal(true);
       onLogin();
-      navigate('/main-page');
     } else {
-      alert('이메일 또는 비밀번호가 다릅니다.');
+      setModalMessage('이메일 또는 비밀번호가 다릅니다.');
+      setShowModal(true);
     }
 
     setEmail('');
@@ -45,13 +57,16 @@ const Login = ({ onLogin }) => {
   };
 
   return (
+    <>
     <Container
+      fluid="md"
       style={{
-        maxWidth: '400px',
-        height: '100vh',
+        maxWidth: 'clamp(480px, 55vw, 768px)',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        margin: '0 auto',
       }}
     >
       <div className='white-background'>
@@ -86,6 +101,7 @@ const Login = ({ onLogin }) => {
               />
             </FloatingLabel>
             <div
+              className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: 'absolute',
@@ -103,7 +119,7 @@ const Login = ({ onLogin }) => {
               variant="outline-primary"
               size="lg"
               type="submit"
-              className="w-100"
+              className="w-100 mt-3"
             >
               로그인
             </Button>
@@ -120,7 +136,19 @@ const Login = ({ onLogin }) => {
           </div>
       </div>
           
-    </Container>
+      </Container>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton style={{ display: 'flex', justifyContent: 'center' }}>
+          <Modal.Title style={{ textAlign: 'center' }}><FontAwesomeIcon icon={faTriangleExclamation} />알림</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>{modalMessage}</Modal.Body>
+        <Modal.Footer className="justify-content-center">
+          <Button variant="primary" onClick={handleCloseModal}>
+            확인
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
