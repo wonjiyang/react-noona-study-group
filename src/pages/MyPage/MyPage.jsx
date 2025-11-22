@@ -16,7 +16,7 @@ const MyPage = () => {
             style={{ borderBottom: `2px solid #dddddd` }}
           >
             <Nav.Link
-              className={`${pathname === '/my/questions' ? 'text-primary' : ''}`}
+              className={`${pathname === '/my/questions' ? 'text-primary' : ''} fs-6`}
               as={Link}
               to='/my/questions'
               style={{ color: '#D3D3D3' }}
@@ -29,7 +29,7 @@ const MyPage = () => {
             style={{ borderBottom: '2px solid #E8E8E8' }}
           >
             <Nav.Link
-              className={`${pathname === '/my/bookmarks' ? 'text-primary' : ''}`}
+              className={`${pathname === '/my/bookmarks' ? 'text-primary' : ''} fs-6`}
               as={Link}
               to='/my/bookmarks'
               style={{ color: '#D3D3D3' }}
