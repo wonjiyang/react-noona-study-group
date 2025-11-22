@@ -24,7 +24,7 @@ const useChatbot = () => {
     const userMessage = {
       role: "user",
       content: userInput,
-      date: new Date().toLocaleString("ko-KR"),
+      date: new Date().toISOString(),
       theme: subject,
       level: level,
     };
@@ -33,8 +33,8 @@ const useChatbot = () => {
     setLoading(true);
     setQuestion("");
 
-    const currentLevel = level || getRandom(ranLevels);
-    const currentSubject = subject || getRandom(ranSubjects);
+    const currentLevel = level === "" ? getRandom(ranLevels) : level;
+    const currentSubject = subject === "" ? getRandom(ranSubjects) : subject;
 
     const baseInstruction = `
       당신은 면접관이고 ${currentLevel} 난이도와 ${currentSubject}의 면접 질문을 해준다.
@@ -85,7 +85,7 @@ const useChatbot = () => {
       const aiMessage = {
         role: "ai",
         content: aiText,
-        date: new Date().toLocaleString("ko-KR"),
+        date: new Date().toISOString(),
       };
 
       setChat((prev) => [...prev, aiMessage]);

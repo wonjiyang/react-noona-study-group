@@ -32,6 +32,7 @@ const MainPage = () => {
     setSubject,
     submitQuestion,
   } = useChatbot();
+
   const buttonText = [
     "빠른 질문받기",
     "힌트받기",
@@ -287,7 +288,7 @@ const MainPage = () => {
                       </div>
                     )}
                     <p style={{ color: "#989898", fontSize: "10px" }}>
-                      {msg.date.toLocaleString("ko-KR")}
+                      {new Date(msg.date).toLocaleString("ko-KR")}
                     </p>
                   </div>
                 </li>
