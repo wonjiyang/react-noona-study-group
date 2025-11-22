@@ -1,4 +1,3 @@
-// 검색: question + answer 모두 확인
 export const useSearchFilter = (items, searchTerm) => {
   if (!searchTerm) return items;
   const lowerTerm = searchTerm.toLowerCase();

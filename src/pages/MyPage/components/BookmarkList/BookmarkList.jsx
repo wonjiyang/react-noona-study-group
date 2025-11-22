@@ -91,10 +91,10 @@ const BookmarkList = () => {
             style={{ width: '100px', fontSize: '0.7em' }}
           >
             <option value="">기술언어</option>
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="javascript">JavaScript</option>
-            <option value="react">React</option>
+            <option value="HTML">HTML</option>
+            <option value="CSS">CSS</option>
+            <option value="JAVASCRIPT">JAVASCRIPT</option>
+            <option value="REACT">REACT</option>
           </select>
         </div>
       </div>
