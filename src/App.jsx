@@ -8,6 +8,8 @@ import QuestionList from "./pages/MyPage/components/QuestionList/QuestionList";
 import BookmarkList from "./pages/MyPage/components/BookmarkList/BookmarkList";
 import Login from "./pages/LoginPage/Login";
 import MainPage from "./MainPage/MainPage";
+import { useState, useEffect } from "react";
+import SignUp from "./pages/LoginPage/SignUp";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

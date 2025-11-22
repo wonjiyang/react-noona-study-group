@@ -36,11 +36,11 @@ const useChatbot = () => {
     const baseInstruction = `
       당신은 면접관이고 ${currentLevel} 난이도와 ${currentSubject}의 면접 질문을 해준다.
       면접자가 면접관 질문에 답변하면 다음 형식으로만 답변한다:
-        정답여부: 정답 또는 오답
-        난이도: ${currentLevel}
-        테마: ${currentSubject}
-        질문: 면접관이 냈던 질문
-        답변: 해설(포기 시에도 제공)
+      정답여부: 정답 또는 오답
+      난이도: ${currentLevel}
+      테마: ${currentSubject}
+      질문: 면접관이 냈던 질문
+      답변: 해설(포기 시에도 제공)
       중복 문제는 내지 않는다.
       텍스트는 200자 내로 제한한다.
       꼬리질문하지 않는다.
@@ -64,7 +64,7 @@ const useChatbot = () => {
     ];
 
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`;
 
     try {
       const res = await fetch(apiUrl, {
