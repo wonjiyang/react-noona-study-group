@@ -29,13 +29,7 @@ const Login = ({ onLogin }) => {
     const savedUserName = localStorage.getItem('userName');
     const savedEmail = localStorage.getItem('email');
     const encryptedPassword = localStorage.getItem('password');
-    
-    // if (!encryptedPassword) {
-    //   alert('이메일 또는 비밀번호가 다릅니다.');
-    //   setEmail('');
-    //   setPassword('');
-    //   return;
-    // }
+
     if (!encryptedPassword) {
       setModalMessage('이메일 또는 비밀번호가 다릅니다.');
       setShowModal(true);
@@ -50,12 +44,10 @@ const Login = ({ onLogin }) => {
 
     if (email === savedEmail && password === decryptedPassword) {
       localStorage.setItem('isLoggedIn', 'true');
-      // alert(`🎉 ${savedUserName}님, 환영합니다.`);
       setModalMessage(`🎉 ${savedUserName}님, 환영합니다.`);
       setShowModal(true);
       onLogin();
     } else {
-      // alert('이메일 또는 비밀번호가 다릅니다.');
       setModalMessage('이메일 또는 비밀번호가 다릅니다.');
       setShowModal(true);
     }

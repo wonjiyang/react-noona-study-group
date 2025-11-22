@@ -96,10 +96,6 @@ const SignUp = () => {
     const handleSignUp = (e) => {
       e.preventDefault();
 
-      // if (!isPasswordValid) {
-      //   alert('비밀번호 규칙을 모두 충족해야 합니다.');
-      //   return;
-      // }
       if (!isPasswordValid) {
         setModalMessage('비밀번호 규칙을 모두 충족해야 합니다.');
         setShowModal(true);
@@ -109,19 +105,6 @@ const SignUp = () => {
       const savedUserName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('email');
 
-      // if (userName === savedUserName) {
-      //   alert('이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.');
-      //   return;
-      // }
-      // if (email === savedEmail) {
-      //   alert('이미 사용 중인 이메일 주소입니다. 다른 이메일을 입력해주세요.');
-      //   return;
-      // }
-      // if (password !== passwordCheck) {
-      //   alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
-      //   setPasswordCheck('');
-      //   return;
-      // }
       if (userName === savedUserName) {
         setModalMessage('이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.');
         setShowModal(true);
@@ -145,10 +128,8 @@ const SignUp = () => {
         'password',
         CryptoJS.AES.encrypt(password, SECRET_KEY).toString()
       );
-      // alert(`🎉 ${userName}님, MentorMe의 회원이 되신 것을 축하드립니다.`);
       setModalMessage(`🎉 ${userName}님, MentorMe의 회원이 되신 것을 축하드립니다.`);
       setShowModal(true);
-      // navigate('/login');
 
       setUserName('');
       setEmail('');
