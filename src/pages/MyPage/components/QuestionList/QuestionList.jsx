@@ -6,7 +6,7 @@ import { faBookmark as regularFaBookmark } from '@fortawesome/free-regular-svg-i
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const QuestionList = () => {
-  const { questions } = useQuestionStore();
+  const { questions, deleteQuestion } = useQuestionStore();
 
   const { bookmarks, addBookmark, deleteBookmark } = useBookmarkStore();
 
@@ -26,7 +26,7 @@ const QuestionList = () => {
 
           return (
             <ListGroup.Item className='border-0 rounded-0 border-bottom pb-2' as='li' key={question.id}>
-              <div>
+              <div className='mb-3'>
                 <span className='text-primary fw-bold'>Q.</span>
                 <p className='ps-3'>{question.question}</p>
               </div>
@@ -34,23 +34,33 @@ const QuestionList = () => {
                 <p className='ps-3 mb-0' style={{ color: '#BCBCBC', fontSize: '12px' }}>
                   {question.date}
                 </p>
-                {isBookmarked ? (
+                <div className='d-flex gap-3 ms-auto'>
                   <Button
-                    className='border-0 bg-transparent d-block p-0 ms-auto'
+                    className='p-0 ps-3 pe-3 rounded-pill'
                     variant='primary'
-                    onClick={() => handleDeleteBookmark(question.id)}
+                    style={{ fontSize: '12px' }}
+                    onClick={() => deleteQuestion(question.id)}
                   >
-                    <FontAwesomeIcon className='text-primary ' icon={solidFaBookmark} />
+                    삭제하기
                   </Button>
-                ) : (
-                  <Button
-                    className='border-0 bg-transparent d-block p-0 ms-auto'
-                    variant='primary'
-                    onClick={() => handleAddBookmark(question)}
-                  >
-                    <FontAwesomeIcon icon={regularFaBookmark} color='#5271EB' />
-                  </Button>
-                )}
+                  {isBookmarked ? (
+                    <Button
+                      className='border-0 bg-transparent d-block p-0 ms-auto'
+                      variant='primary'
+                      onClick={() => handleDeleteBookmark(question.id)}
+                    >
+                      <FontAwesomeIcon className='text-primary ' icon={solidFaBookmark} />
+                    </Button>
+                  ) : (
+                    <Button
+                      className='border-0 bg-transparent d-block p-0 ms-auto'
+                      variant='primary'
+                      onClick={() => handleAddBookmark(question)}
+                    >
+                      <FontAwesomeIcon icon={regularFaBookmark} color='#5271EB' />
+                    </Button>
+                  )}
+                </div>
               </div>
             </ListGroup.Item>
           );
