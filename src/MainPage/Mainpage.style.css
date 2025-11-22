@@ -15,12 +15,19 @@ p {
   position: absolute;
   bottom: -40px;
   left: -20px;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-image: url("../assets/ai-icon.png");
+  background-color: #0d6efd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-size: cover;
 }
+.chat-container {
+  margin: 0 auto !important;
+}
+
 /* 스크롤바 숨기기 */
 .chat-scroll::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
@@ -29,8 +36,26 @@ p {
 .chat-scroll {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
+  overscroll-behavior: contain;
 }
 textarea:focus {
   border: 2px solid blue;
   outline: 0;
+}
+@media (max-width: 1024px) {
+  .chat-box {
+    width: 70vw !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .chat-box {
+    width: 90vw !important;
+  }
+  .chat-scroll ul {
+    gap: 50px !important;
+  }
+  .chat-scroll li {
+    width: 100% !important;
+  }
 }

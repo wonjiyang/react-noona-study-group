@@ -1,5 +1,6 @@
 // src/components/Modal/ModalPage.jsx
 import React from "react";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -11,42 +12,57 @@ const ModalPage = ({
   setLevel,
   setSubject,
   submitQuestion,
+  quota,
+  setQuota,
 }) => {
-  const levelHandler = (e) => setLevel(e.target.dataset.level);
   const subjectHandler = (e) => setSubject(e.target.dataset.subject);
 
   const selectThemeLevel = () => {
+    if (quota <= 0) {
+      alert("할당량을 지정해주세요.");
+      return;
+    }
     submitQuestion(`난이도는 ${level}, 테마는 ${subject}로 면접 질문주세요`);
+    setLevel();
+    setSubject();
     handleClose();
   };
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>테마 및 난이도 설정하기</Modal.Title>
+        <Modal.Title>어떤 유형의 문제를 낼까요?</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
-        <h3>난이도</h3>
-        <p className="d-flex align-items-center gap-2">
-          {" "}
-          {["상", "중", "하"].map((lv) => (
-            <span
-              key={lv}
-              style={{
-                border: level === lv ? "2px solid blue" : "none",
-                padding: "6px",
-                cursor: "pointer",
-              }}
-              data-level={lv}
-              onClick={levelHandler}
-            >
-              {lv}
-            </span>
-          ))}
-        </p>
-        <h3>테마</h3>
-        <p className="d-flex align-items-center gap-2">
+        <h5 className="px-5">난이도를 선택해주세요</h5>
+        <div className="d-flex align-items-center justify-content-between px-5 my-3">
+          <Form.Check
+            type="radio"
+            id="default-radio"
+            label="입문"
+            value="하"
+            checked={level === "하"}
+            onChange={(e) => setLevel(e.target.value)}
+          />
+          <Form.Check
+            type="radio"
+            id="default-radio"
+            label="중급"
+            value="중"
+            checked={level === "중"}
+            onChange={(e) => setLevel(e.target.value)}
+          />
+          <Form.Check
+            type="radio"
+            id="default-radio"
+            label="실전"
+            value="상"
+            checked={level === "상"}
+            onChange={(e) => setLevel(e.target.value)}
+          />
+        </div>
+        <h5 className="px-5">기술언어를 선택해주세요</h5>
+        <div className="d-flex flex-wrap align-items-center justify-content-between px-5 my-3">
           {" "}
           {["HTML", "CSS", "JAVASCRIPT", "REACT"].map((sub) => (
             <span
@@ -62,9 +78,17 @@ const ModalPage = ({
               {sub}
             </span>
           ))}
-        </p>
+        </div>
+        <h5 className="px-5">일일 할당량을 입력해주세요</h5>
+        <div className="px-5">
+          <Form.Control
+            size="sm"
+            value={quota}
+            type="number"
+            onChange={(e) => setQuota(Number(e.target.value))}
+          />
+        </div>
       </Modal.Body>
-
       <Modal.Footer>
         <Button variant="primary" onClick={selectThemeLevel}>
           전송
