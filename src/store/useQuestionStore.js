@@ -1,6 +1,29 @@
 import { create } from 'zustand';
-import data from '../../data';
+import { persist } from 'zustand/middleware';
 
-export const useQuestionStore = create(() => ({
-  questions: data,
-}));
+export const useQuestionStore = create(
+  persist(
+    (set) => ({
+      questions: [],
+      addQuestions: (newQuestions) =>
+        set((state) => {
+          const existingIds = new Set(state.questions.map((question) => question.id));
+
+          const uniqueNewQuestions = newQuestions.filter((newQuestion) => !existingIds.has(newQuestion.id));
+
+          if (uniqueNewQuestions.length > 0) {
+            return { questions: [...state.questions, ...uniqueNewQuestions] };
+          }
+
+          return state;
+        }),
+      deleteQuestion: (questionId) =>
+        set((state) => ({
+          questions: state.questions.filter((question) => question.id !== questionId),
+        })),
+    }),
+    {
+      name: 'questions',
+    }
+  )
+);

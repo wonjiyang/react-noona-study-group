@@ -1,5 +1,4 @@
 .page {
-  background-color: #dddddd;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,8 +17,8 @@
 .iconBox {
   background-color: #fff;
   height: auto;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   position: absolute;
   top: 11vh;
   left: 50%;
@@ -53,10 +52,10 @@
   max-height: 85vh;
   min-height: 82vh;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 10vh 3% 2vh;
   overflow-y: auto;
-  margin-top: 6.9vh;
+  margin: 6.9vh 3%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -161,7 +160,7 @@
 
 @media (max-width: 380px) {
   .box {
-    margin-top: 3vh;
+    margin-top: 4vh;
     padding: 14.5vw 3% 2vh;
     max-height: 90vh;
     min-height: 83vh;
