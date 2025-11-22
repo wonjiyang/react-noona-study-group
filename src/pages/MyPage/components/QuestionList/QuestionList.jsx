@@ -96,9 +96,9 @@ const QuestionList = () => {
             style={{ width: '100px', fontSize: '0.7em' }}
           >
             <option value="">난이도</option>
-            <option value="easy">입문</option>
-            <option value="medium">중급</option>
-            <option value="hard">실전</option>
+            <option value="상">입문</option>
+            <option value="중">중급</option>
+            <option value="하">실전</option>
           </select>
 
           <select
