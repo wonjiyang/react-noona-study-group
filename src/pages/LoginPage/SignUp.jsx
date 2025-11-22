@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faCheck, faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCheck, faEye, faEyeSlash, faTriangleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
 import CryptoJS from 'crypto-js';
-import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, Container, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.style.css';
 import { useNavigate } from 'react-router';
@@ -23,6 +23,14 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (modalMessage.includes('축하드립니다')) {
+      navigate('/login');
+    }
+  };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -88,24 +96,45 @@ const SignUp = () => {
     const handleSignUp = (e) => {
       e.preventDefault();
 
+      // if (!isPasswordValid) {
+      //   alert('비밀번호 규칙을 모두 충족해야 합니다.');
+      //   return;
+      // }
       if (!isPasswordValid) {
-        alert('비밀번호 규칙을 모두 충족해야 합니다.');
+        setModalMessage('비밀번호 규칙을 모두 충족해야 합니다.');
+        setShowModal(true);
         return;
       }
   
       const savedUserName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('email');
 
+      // if (userName === savedUserName) {
+      //   alert('이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.');
+      //   return;
+      // }
+      // if (email === savedEmail) {
+      //   alert('이미 사용 중인 이메일 주소입니다. 다른 이메일을 입력해주세요.');
+      //   return;
+      // }
+      // if (password !== passwordCheck) {
+      //   alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+      //   setPasswordCheck('');
+      //   return;
+      // }
       if (userName === savedUserName) {
-        alert('이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.');
+        setModalMessage('이미 사용 중인 아이디입니다. 다른 이름을 입력해주세요.');
+        setShowModal(true);
         return;
       }
       if (email === savedEmail) {
-        alert('이미 사용 중인 이메일 주소입니다. 다른 이메일을 입력해주세요.');
+        setModalMessage('이미 사용 중인 이메일 주소입니다. 다른 이메일을 입력해주세요.');
+        setShowModal(true);
         return;
       }
       if (password !== passwordCheck) {
-        alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+        setModalMessage('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+        setShowModal(true);
         setPasswordCheck('');
         return;
       }
@@ -116,8 +145,10 @@ const SignUp = () => {
         'password',
         CryptoJS.AES.encrypt(password, SECRET_KEY).toString()
       );
-      alert(`🎉 ${userName}님, MentorMe의 회원이 되신 것을 축하드립니다.`);
-      navigate('/login');
+      // alert(`🎉 ${userName}님, MentorMe의 회원이 되신 것을 축하드립니다.`);
+      setModalMessage(`🎉 ${userName}님, MentorMe의 회원이 되신 것을 축하드립니다.`);
+      setShowModal(true);
+      // navigate('/login');
 
       setUserName('');
       setEmail('');
@@ -133,13 +164,16 @@ const SignUp = () => {
       password === passwordCheck;
 
   return (
+    <>
     <Container
+      fluid="md"
       style={{
-        maxWidth: '400px',
-        height: '100vh',
+        maxWidth: 'clamp(480px, 55vw, 768px)',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        margin: '0 auto',
       }}
     >
       <div className='white-background'>
@@ -287,7 +321,7 @@ const SignUp = () => {
               variant="outline-primary"
               size="lg"
               type="submit"
-              className="w-100 mt-3 mb-4"
+              className="w-100 mt-3 mb-3"
               disabled={!isFormValid}
             >
               가입하기
@@ -295,14 +329,28 @@ const SignUp = () => {
           </Form>
           <Button
             variant="outline-secondary"
+            size="lg"
             className="w-100"
             onClick={() => navigate('/login')}
           >
             로그인 화면으로
           </Button>
       </div>
-
     </Container>
+    <Modal show={showModal} onHide={handleCloseModal} centered>
+      <Modal.Header closeButton style={{ display: 'flex', justifyContent: 'center' }}>
+        <Modal.Title style={{ textAlign: 'center' }}><FontAwesomeIcon icon={faTriangleExclamation} />알림</Modal.Title>
+      </Modal.Header>
+      <Modal.Body style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+        {modalMessage}
+      </Modal.Body>
+      <Modal.Footer className="justify-content-center">
+        <Button variant="primary" onClick={handleCloseModal}>
+          확인
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  </>
   )
 }
 
