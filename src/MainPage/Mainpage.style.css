@@ -11,6 +11,10 @@ p {
   margin: 0;
   padding: 0;
 }
+.main-container {
+  height: 100vh;
+  padding: 4.5vh 4%;
+}
 .ai-icon {
   position: absolute;
   bottom: -40px;
@@ -24,38 +28,64 @@ p {
   align-items: center;
   background-size: cover;
 }
-.chat-container {
-  margin: 0 auto !important;
+.chat-box {
+  width: 51%;
+  max-width: 600px;
+  margin: 6.5vh auto 0;
 }
-
-/* 스크롤바 숨기기 */
-.chat-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
-}
-
 .chat-scroll {
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
-  overscroll-behavior: contain;
+  width: 95%;
+  margin: 0 2%;
+}
+.chat-container {
+  width: 100%;
+  margin-top: 18px;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 2vh 2% 1vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: clamp(25vh, 240vw, 65vh);
 }
 textarea:focus {
   border: 2px solid blue;
   outline: 0;
 }
+.border-primary {
+  width: 82%;
+  height: 5vh;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 2px;
+}
+
 @media (max-width: 1024px) {
   .chat-box {
-    width: 70vw !important;
+    width: 80%;
+    margin: 5.5vh auto 0;
+  }
+}
+@media (max-width: 768px) {
+  .chat-box {
+    width: 92%;
+  }
+  .main-container {
+    padding: 4.5vh 0px;
   }
 }
 
 @media (max-width: 600px) {
-  .chat-box {
-    width: 90vw !important;
-  }
   .chat-scroll ul {
     gap: 50px !important;
   }
   .chat-scroll li {
     width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .border-primary {
+    width: 75%;
   }
 }
