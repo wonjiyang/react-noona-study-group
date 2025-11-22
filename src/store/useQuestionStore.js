@@ -1,6 +1,14 @@
 import { create } from 'zustand';
-import data from '../../data';
+import { persist } from 'zustand/middleware';
 
-export const useQuestionStore = create(() => ({
-  questions: data,
-}));
+export const useQuestionStore = create(
+  persist(
+    (set) => ({
+      questions: [],
+      setQuestions: (newQuestions) => set({ questions: newQuestions }),
+    }),
+    {
+      name: 'question-storage',
+    }
+  )
+);

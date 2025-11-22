@@ -1,5 +1,6 @@
 // src/hooks/useChatbot.js
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useQuestionStore } from '../store/useQuestionStore';
 
 const useChatbot = () => {
   // 상태 관리
@@ -8,6 +9,8 @@ const useChatbot = () => {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState('');
   const [subject, setSubject] = useState('');
+
+  const { setQuestions } = useQuestionStore();
 
   const submitQuestion = useCallback(
     async (prompt) => {
@@ -49,8 +52,7 @@ const useChatbot = () => {
                      면접자 질문에 꼬리물기 질문하지 않는다
                      면접자가 면접질문을 하기 전까지 면접 질문하지 않는다`;
 
-      const hintInstruction =
-        '면접 문제에 대한 힌트를 아주 간단히 제공한다. 문제를 직접 말하지 않는다.';
+      const hintInstruction = '면접 문제에 대한 힌트를 아주 간단히 제공한다. 문제를 직접 말하지 않는다.';
 
       let systemInstruction;
 
@@ -83,9 +85,7 @@ const useChatbot = () => {
         const res = await fetch(apiUrl, requestOption);
         const data = await res.json();
 
-        const aiText =
-          data.candidates?.[0]?.content?.parts?.[0]?.text ||
-          '응답을 받을 수 없습니다.';
+        const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || '응답을 받을 수 없습니다.';
 
         const aiMessage = {
           role: 'ai',
@@ -112,32 +112,27 @@ const useChatbot = () => {
 
   // ✔ AI 답변 정리
   const answers = chat
-    .filter(
-      (msg) =>
-        msg.role === 'ai' &&
-        msg.content.includes('정답여부:') &&
-        msg.content.includes('난이도:')
-    )
+    .filter((msg) => msg.role === 'ai' && msg.content.includes('정답여부:') && msg.content.includes('난이도:'))
     .map((msg) => {
       const lines = msg.content.split(/\n/).map((line) => line.trim());
       const obj = {};
 
       lines.forEach((line) => {
-        if (line.startsWith("정답여부:"))
-          obj.answercheck = line.replace("정답여부:", "").trim();
-        else if (line.startsWith("질문:"))
-          obj.question = line.replace("질문:", "").trim();
-        else if (line.startsWith("답변:"))
-          obj.answer = line.replace("답변:", "").trim();
-        else if (line.startsWith("난이도:"))
-          obj.level = line.replace("난이도:", "").trim();
-        else if (line.startsWith("테마:"))
-          obj.subject = line.replace("테마:", "").trim();
+        if (line.startsWith('정답여부:')) obj.answercheck = line.replace('정답여부:', '').trim();
+        else if (line.startsWith('질문:')) obj.question = line.replace('질문:', '').trim();
+        else if (line.startsWith('답변:')) obj.answer = line.replace('답변:', '').trim();
+        else if (line.startsWith('난이도:')) obj.level = line.replace('난이도:', '').trim();
+        else if (line.startsWith('테마:')) obj.subject = line.replace('테마:', '').trim();
       });
 
-      obj.date = new Date(msg.date).toLocaleString('ko-KR');
+      obj.date = msg.date;
+      obj.id = Math.random().toString(36).substring(2, 12);
       return obj;
     });
+
+  useEffect(() => {
+    setQuestions(answers);
+  }, [chat]);
 
   return {
     answers,

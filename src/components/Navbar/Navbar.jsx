@@ -23,10 +23,10 @@ const CustomNavbar = ({ isLoggedIn, onLogout }) => {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link 
-              as="span" 
-              onClick={isLoggedIn ? handleLogoutClick : () => navigate('/login')} 
-              style={{ cursor: 'pointer' }}
+            <Nav.Link
+              as='span'
+              onClick={isLoggedIn ? handleLogoutClick : () => navigate('/login')}
+              style={{ color: 'white', cursor: 'pointer' }}
             >
               <FontAwesomeIcon icon={faUser} /> {isLoggedIn ? '로그아웃' : '로그인'}
             </Nav.Link>
