@@ -35,12 +35,7 @@ const MainPage = () => {
     submitQuestion,
   } = useChatbot();
 
-  const buttonText = [
-    '빠른 질문받기',
-    '힌트받기',
-    '포기하기',
-    '처음부터 다시시작',
-  ];
+  const buttonText = ['빠른질문', '힌트', '포기', '다시시작'];
   console.log(chat);
   //   일일할당량 게이지
   let answerGraph = chat
@@ -211,8 +206,7 @@ const MainPage = () => {
               <li
                 style={{
                   position: 'relative',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
+                  fontSize: '0.8em',
                   padding: '8px 14px',
                   backgroundColor: '#ebebeb',
                   borderRadius: '15px',
@@ -288,7 +282,10 @@ const MainPage = () => {
           </div>
           <div>
             {/* 텍스트 검색 입력 버튼 */}
-            <div className="d-flex gap-2 justify-content-center flex-wrap my-2">
+            <div
+              className="d-flex gap-2 justify-content-center flex-wrap my-2"
+              style={{ height: '5vh' }}
+            >
               <textarea
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => {
@@ -314,7 +311,7 @@ const MainPage = () => {
               </Button>
             </div>
             {/* 힌트, 포기, 다시하기 버튼 */}
-            <div className="d-flex gap-3 align-items-center justify-content-between m-2">
+            <div className="d-flex align-items-center justify-content-between m-2">
               <div className="d-flex mx-2 gap-2 ">
                 {buttonText.map((text) => (
                   <p
@@ -338,11 +335,12 @@ const MainPage = () => {
                 style={{
                   cursor: 'pointer',
                   color: '#787878ff',
-                  fontSize: '0.8em',
+                  fontSize: '1.3em',
+                  marginRight: '1%',
                 }}
                 onClick={() => setShowModal(true)}
               >
-                <FontAwesomeIcon icon={faBook} size="2xl" />
+                <FontAwesomeIcon icon={faBook} />
               </p>
             </div>
           </div>

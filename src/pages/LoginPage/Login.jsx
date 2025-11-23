@@ -88,11 +88,6 @@ const Login = ({ onLogin }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                style={{
-                  height: '35px', // input 높이 지정
-                  padding: '0 12px', // 위아래 padding 줄이기
-                  fontSize: '0.9em', // 글자 크기
-                }}
               />
             </FloatingLabel>
             <div style={{ position: 'relative' }}>

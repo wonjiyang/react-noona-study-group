@@ -76,7 +76,7 @@ const BookmarkList = () => {
             value={selectedLevel}
             onChange={(e) => setSelectedLevel(e.target.value)}
             className="form-select"
-            style={{ width: '100px', fontSize: '0.7em' }}
+            style={{ width: '80px', fontSize: '0.7em' }}
           >
             <option value="">난이도</option>
             <option value="상">입문</option>
@@ -88,7 +88,7 @@ const BookmarkList = () => {
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
             className="form-select"
-            style={{ width: '100px', fontSize: '0.7em' }}
+            style={{ maxWidth: '120px', fontSize: '0.7em' }}
           >
             <option value="">기술언어</option>
             <option value="HTML">HTML</option>
@@ -100,7 +100,7 @@ const BookmarkList = () => {
       </div>
 
       {/* 북마크 리스트 */}
-      <ListGroup as="ul" style={{ padding: '1.5vh 4%' }}>
+      <ListGroup as="ul" style={{ padding: '0.5vh 4%' }}>
         {filteredBookmarks.length > 0 ? (
           filteredBookmarks.map((bookmark) => (
             <BookmarkItem

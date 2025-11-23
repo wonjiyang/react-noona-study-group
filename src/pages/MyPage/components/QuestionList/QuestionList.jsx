@@ -93,7 +93,7 @@ const QuestionList = () => {
             value={selectedLevel}
             onChange={(e) => setSelectedLevel(e.target.value)}
             className="form-select"
-            style={{ width: '100px', fontSize: '0.7em' }}
+            style={{ width: '80px', fontSize: '0.7em' }}
           >
             <option value="">난이도</option>
             <option value="상">입문</option>
@@ -105,7 +105,7 @@ const QuestionList = () => {
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
             className="form-select"
-            style={{ width: '100px', fontSize: '0.7em' }}
+            style={{ width: '120px', fontSize: '0.7em' }}
           >
             <option value="">기술언어</option>
             <option value="HTML">HTML</option>
@@ -117,7 +117,7 @@ const QuestionList = () => {
       </div>
 
       {/* 리스트 */}
-      <ListGroup as="ul" style={{ padding: '1.5vh 4%' }}>
+      <ListGroup as="ul" style={{ padding: '0.5vh 4%' }}>
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map((question) => {
             const isBookmarked = bookmarks.some(
