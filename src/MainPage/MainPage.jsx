@@ -265,7 +265,7 @@ const MainPage = () => {
                     fontSize: '1em',
                     padding: '1vh 4%',
                     alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                    width: '50%',
+                    width: '70%',
                     backgroundColor:
                       msg.role === 'user' ? '#0d6efd' : '#ebebeb',
                     borderRadius: '15px',
@@ -279,7 +279,7 @@ const MainPage = () => {
                       style={{
                         width: '30px',
                         height: '30px',
-                        borderRadius: '70%',
+                        borderRadius: '50%',
                         backgroundColor: '#0d6efd',
                         display: 'flex',
                         alignItems: 'center',
