@@ -193,7 +193,6 @@ const MainPage = () => {
             style={{
               flex: 1,
               overflowY: 'auto',
-              padding: '0 20px',
               margin: 'auto',
             }}
             className="chat-scroll"
@@ -214,7 +213,7 @@ const MainPage = () => {
                   padding: '1vh 4%',
                   backgroundColor: '#ebebeb',
                   borderRadius: '15px',
-                  width: '70%',
+                  maxWidth: '70%',
                   wordBreak: 'keep-all',
                   display: 'flex',
                   gap: '10px',
@@ -265,7 +264,7 @@ const MainPage = () => {
                     fontSize: '1em',
                     padding: '1vh 4%',
                     alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                    width: '50%',
+                    maxWidth: '70%',
                     backgroundColor:
                       msg.role === 'user' ? '#0d6efd' : '#ebebeb',
                     borderRadius: '15px',
@@ -279,7 +278,7 @@ const MainPage = () => {
                       style={{
                         width: '30px',
                         height: '30px',
-                        borderRadius: '70%',
+                        borderRadius: '50%',
                         backgroundColor: '#0d6efd',
                         display: 'flex',
                         alignItems: 'center',
@@ -306,6 +305,9 @@ const MainPage = () => {
                         style={{
                           color: msg.role === 'ai' ? '#212529' : '#fff',
                           margin: 0,
+                          wordBreak: 'break-word',
+                          overflowWrap: 'anywhere',
+                          whiteSpace: 'pre-wrap',
                         }}
                       >
                         {line}
@@ -314,7 +316,7 @@ const MainPage = () => {
                     <p
                       style={{
                         fontSize: '0.7em',
-                        color: msg.role === 'ai' ? '#989898' : '#fff',
+                        color: msg.role === 'ai' ? '#989898' : '#c5c5c5ff',
                         alignSelf:
                           msg.role === 'user' ? 'flex-end' : 'flex-start',
                         margin: '2px 0 0 0',
@@ -336,7 +338,7 @@ const MainPage = () => {
 
           {/* 입력창 */}
           <div
-            className="d-flex gap-2 justify-content-center flex-wrap my-2"
+            className="d-flex gap-2 justify-content-center align-items-center flex-wrap my-2"
             style={{ height: '5vh' }}
           >
             <textarea
@@ -348,15 +350,16 @@ const MainPage = () => {
                 }
               }}
               value={inputText}
-              className="border-primary"
+              className="border-input"
             ></textarea>
             <Button
               variant="primary"
               size="lg"
               onClick={handleSubmit}
               style={{
-                padding: '7px 14px',
-                borderRadius: '6px',
+                padding: '0 14px',
+                height: '5vh',
+                borderRadius: '5px',
                 fontSize: '0.7em',
               }}
             >
