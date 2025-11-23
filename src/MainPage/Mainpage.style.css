@@ -49,15 +49,16 @@ p {
   height: clamp(25vh, 240vw, 65vh);
 }
 textarea:focus {
-  border: 2px solid blue;
+  border: 2px solid #0d6efd;
   outline: 0;
 }
-.border-primary {
+.border-input {
   width: 82%;
   height: 5vh;
   border-radius: 10px;
   font-size: 14px;
-  padding: 2px;
+  padding: 1vh 2%;
+  border-color: #0d6efd;
 }
 
 @media (max-width: 1024px) {
@@ -91,7 +92,7 @@ textarea:focus {
 }
 
 @media (max-width: 480px) {
-  .border-primary {
+  .border-input {
     width: 75%;
   }
 }
