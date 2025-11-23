@@ -207,7 +207,7 @@ const MainPage = () => {
               <li
                 style={{
                   position: 'relative',
-                  padding: '8px 14px',
+                  padding: '1vh 4%',
                   backgroundColor: '#ebebeb',
                   borderRadius: '15px',
                   width: '70%',
@@ -234,9 +234,8 @@ const MainPage = () => {
                   className="chat-text"
                   key={i}
                   style={{
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    padding: '8px',
+                    fontSize: '1em',
+                    padding: ' 1vh 4%',
                     alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
                     width: '50%',
                     backgroundColor:
@@ -245,7 +244,12 @@ const MainPage = () => {
                     position: 'relative',
                   }}
                 >
-                  <p style={{ color: msg.role === 'ai' ? '#000' : '#fff' }}>
+                  <p
+                    style={{
+                      color: msg.role === 'ai' ? '#212529' : '#fff',
+                      padding: '0 1%',
+                    }}
+                  >
                     {msg.content.split('\n').map((line, index) => (
                       <p key={index}>{line}</p>
                     ))}
