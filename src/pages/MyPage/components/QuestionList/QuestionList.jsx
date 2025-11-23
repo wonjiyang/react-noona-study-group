@@ -155,23 +155,23 @@ const QuestionList = () => {
                     {isBookmarked ? (
                       <Button
                         className="border-0 bg-transparent d-block p-0 ms-auto"
-                        variant="primary"
+                        style={{ color: '#ff8818ff' }}
                         onClick={() => handleDeleteBookmark(question.id)}
                       >
                         <FontAwesomeIcon
-                          className="text-primary"
                           icon={solidFaBookmark}
+                          style={{ color: '#ff8818ff' }}
                         />
                       </Button>
                     ) : (
                       <Button
                         className="border-0 bg-transparent d-block p-0 ms-auto"
-                        variant="primary"
+                        style={{ color: '#ff8818ff' }}
                         onClick={() => handleAddBookmark(question)}
                       >
                         <FontAwesomeIcon
                           icon={regularFaBookmark}
-                          color="#5271EB"
+                          color="#ff8818ff"
                         />
                       </Button>
                     )}
