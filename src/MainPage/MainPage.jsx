@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faRobot } from '@fortawesome/free-solid-svg-icons';
-import { Container, Button, Spinner } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import './Mainpage.style.css';
 import useChatbot from '../hooks/useChatbot';
 import ModalPage from './Modal/ModalPage';
@@ -218,10 +218,35 @@ const MainPage = () => {
                   borderRadius: '15px',
                   width: '70%',
                   wordBreak: 'keep-all',
+                  display: 'flex',
+                  gap: '10px',
                 }}
               >
-                <p>안녕하세요 ai 면접관입니다.</p>
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <FontAwesomeIcon icon={faRobot} className="icon" />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5vh',
+                  }}
+                >
+                  <p>안녕하세요 ai 면접관입니다.</p>
+                  <p>
+                    1. 우측 하단 아이콘 버튼을 눌러 난이도와 테마를
+                    설정해주세요.
+                  </p>
+                  <p>2. 모달창안에서 난이도와 테마를 입력하면 질문 시작</p>
+                  <p>3. 잘 모르겠으면 검색란 아래 힌트 버튼도 이용해보세요!</p>
+                  <p>4. 텍스트로 질문에 답변</p>
+                  <p>5. 정답 시 할당량 그래프 증가!</p>
+                  <p>
+                    6. 빨리 진행하고 싶다면 빠른 질문받기 버튼 (랜덤 질문 생성)
+                  </p>
+                </div>
               </li>
+
               {/* 채팅 출력 */}
               {chat.map((msg, i) => (
                 <li
@@ -236,8 +261,15 @@ const MainPage = () => {
                       msg.role === 'user' ? '#0d6efd' : '#ebebeb',
                     borderRadius: '15px',
                     position: 'relative',
+                    display: 'flex',
+                    gap: '10px',
                   }}
                 >
+                  {msg.role === 'ai' && (
+                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <FontAwesomeIcon icon={faRobot} className="icon" />
+                    </div>
+                  )}
                   <p
                     style={{
                       color: msg.role === 'ai' ? '#212529' : '#fff',
@@ -250,6 +282,7 @@ const MainPage = () => {
                   </p>
                 </li>
               ))}
+
               {loading && (
                 <li>
                   <Spinner animation="border" variant="primary" />
