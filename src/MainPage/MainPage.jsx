@@ -179,7 +179,7 @@ const MainPage = () => {
             >
               목표 다시 설정하기 &gt;
             </p>
-            <p style={{ fontSize: '12px' }}>{msg}</p>
+            <p style={{ fontSize: '12px', color: '#ff8818ff' }}>{msg}</p>
           </div>
         </div>
         {/* 박스 */}
@@ -321,7 +321,7 @@ const MainPage = () => {
                   <p
                     style={{
                       cursor: 'pointer',
-                      backgroundColor: '#d9d9d9',
+                      backgroundColor: '#ff8818ff',
                       color: 'white',
                       padding: ' 7px 14px',
                       borderRadius: '6px',
