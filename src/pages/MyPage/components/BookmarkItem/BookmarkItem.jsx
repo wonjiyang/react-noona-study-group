@@ -7,36 +7,44 @@ const BookmarkItem = ({ bookmark, handleDeleteBookMark }) => {
   const [showAnswer, setShowAnswer] = useState(false);
 
   return (
-    <ListGroup.Item className='border-0 rounded-0 border-bottom pb-2' as='li' key={bookmark.id}>
-      <div className='mb-3'>
-        <span className='text-primary fw-bold'>Q.</span>
-        <p className='ps-3 mb-0'>{bookmark.question}</p>
+    <ListGroup.Item
+      className="border-0 rounded-0 border-bottom pb-2"
+      as="li"
+      key={bookmark.id}
+    >
+      <div className="mb-3">
+        <span className="text-primary fw-bold">Q.</span>
+        <p className="ps-3 mb-0">{bookmark.question}</p>
       </div>
       {showAnswer && (
-        <div className='mb-3'>
-          <span className='text-primary fw-bold'>A.</span>
-          <p className='ps-3 mb-0'>{bookmark.answer}</p>
+        <div className="mb-3">
+          <span className="text-primary fw-bold">A.</span>
+          <p className="ps-3 mb-0">{bookmark.answer}</p>
         </div>
       )}
-      <div className='d-flex align-items-center'>
-        <p className='ps-3 mb-0' style={{ color: '#BCBCBC', fontSize: '12px' }}>
+      <div className="d-flex align-items-center">
+        <p className="ps-3 mb-0" style={{ color: '#BCBCBC', fontSize: '12px' }}>
           {bookmark.date}
         </p>
-        <div className='d-flex gap-3 ms-auto'>
+        <div className="d-flex gap-3 ms-auto">
           <Button
-            className='p-0 ps-3 pe-3 rounded-pill'
-            variant='primary'
+            className="p-0 ps-3 pe-3 rounded-pill"
+            variant="primary"
             style={{ fontSize: '12px' }}
             onClick={() => setShowAnswer(!showAnswer)}
           >
             정답보기
           </Button>
           <Button
-            className='border-0 bg-transparent d-block p-0'
-            variant='primary'
+            className="border-0 bg-transparent d-block p-0"
+            variant="primary"
             onClick={() => handleDeleteBookMark(bookmark.id)}
           >
-            <FontAwesomeIcon className='text-primary ' icon={faBookmark} />
+            <FontAwesomeIcon
+              className="text-primary "
+              icon={faBookmark}
+              style={{ color: '#ff8818ff' }}
+            />
           </Button>
         </div>
       </div>
