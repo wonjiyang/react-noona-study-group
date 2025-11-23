@@ -8,19 +8,19 @@ import useChatbot from '../hooks/useChatbot';
 import ModalPage from './Modal/ModalPage';
 
 const MainPage = () => {
-  // 예)임의 할당량
-  const [quota, setQuota] = useState(0);
-  //   텍스트
-  const [inputText, setInputText] = useState('');
-  //  자동 스크롤 및 부모 스크롤 고정
-  const chatBoxRef = useRef(null);
+  const [quota, setQuota] = useState(() => {
+    const saved = localStorage.getItem('quota');
+    return saved ? Number(saved) : 0;
+  });
 
-  // 모달창 설정
+  const [inputText, setInputText] = useState(() => {
+    return localStorage.getItem('inputText') || '';
+  });
+
+  const chatBoxRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  //   달성률 메시지, 메시지 모달
   const [msg, setMsg] = useState('');
 
-  //   hooks로 api로직 분리
   const {
     setVersion,
     version,
@@ -36,9 +36,26 @@ const MainPage = () => {
   } = useChatbot();
 
   const buttonText = ['빠른질문', '힌트', '포기', '다시시작'];
-  console.log(chat);
-  //   일일할당량 게이지
-  let answerGraph = chat
+
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chat, loading]);
+
+  // -------------------------
+  // inputText LocalStorage 저장
+  // -------------------------
+  useEffect(() => {
+    localStorage.setItem('inputText', inputText);
+  }, [inputText]);
+
+  // quota LocalStorage 저장
+  useEffect(() => {
+    localStorage.setItem('quota', quota);
+  }, [quota]);
+
+  const answerGraph = chat
     .filter(
       (el) =>
         el.content.includes('정답') &&
@@ -47,13 +64,7 @@ const MainPage = () => {
     )
     .filter((el) => el.role === 'ai');
 
-  useEffect(() => {
-    if (chatBoxRef.current) {
-      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-    }
-  }, [chat, loading]);
-
-  // 일일할당량별 메시지
+  // 일일할당량 메시지
   useEffect(() => {
     const percent = Math.floor((answerGraph.length / Number(quota)) * 100);
     if (percent >= 100) {
@@ -78,7 +89,6 @@ const MainPage = () => {
       alert('먼저 일일 할당량 먼저 선택해주세요');
       return;
     }
-    // 힌트 ,포기, 질문 클릭시
     if (
       text.includes('힌트') ||
       text.includes('포기') ||
@@ -87,8 +97,6 @@ const MainPage = () => {
       submitQuestion(text);
       return;
     }
-
-    //"다시시작" 클릭시
     if (text.includes('다시시작')) {
       if (window.confirm(`정말로 다시시작 하시겠습니까?`)) {
         setQuestion(text);
@@ -102,11 +110,11 @@ const MainPage = () => {
     submitQuestion(inputText);
     setInputText('');
   };
+
   return (
     <div className="main-container">
-      {/* 컨테이너 */}
       <div className="chat-box">
-        {/* 일일 할당량, 그래프 박스 */}
+        {/* 일일 할당량, 그래프 */}
         <div
           style={{
             width: '100%',
@@ -118,10 +126,7 @@ const MainPage = () => {
         >
           <div
             className="d-flex justify-content-between align-items-center"
-            style={{
-              width: '94%',
-              margin: 'auto',
-            }}
+            style={{ width: '94%', margin: 'auto' }}
           >
             <p style={{ fontSize: '15px', fontWeight: 'bold' }}>
               오늘 할당량 목표
@@ -182,9 +187,9 @@ const MainPage = () => {
             <p style={{ fontSize: '12px', color: '#ff8818ff' }}>{msg}</p>
           </div>
         </div>
-        {/* 박스 */}
-        <div className=" chat-container">
-          {/* 챗봇 박스 */}
+
+        {/* 챗봇 */}
+        <div className="chat-container">
           <div
             ref={chatBoxRef}
             style={{
@@ -204,6 +209,7 @@ const MainPage = () => {
                 fontSize: '0.8em',
               }}
             >
+              {/* 초기 메시지 */}
               <li
                 style={{
                   position: 'relative',
@@ -215,20 +221,8 @@ const MainPage = () => {
                 }}
               >
                 <p>안녕하세요 ai 면접관입니다.</p>
-                <p>
-                  1. 우측 하단 아이콘 버튼을 눌러 난이도와 테마를 설정해주세요.
-                </p>
-                <p>2. 모달창안에서 난이도와 테마를 입력하면 질문 시작</p>
-                <p>3. 잘 모르겠으면 검색란 아래 힌트 버튼도 이용해보세요!</p>
-                <p>4. 텍스트로 질문에 답변</p>
-                <p>5. 정답 시 할당량 그래프 증가!</p>
-                <p>
-                  6. 빨리 진행하고 싶다면 빠른 질문받기 버튼 (랜덤 질문 생성)
-                </p>
-                <div className="ai-icon">
-                  <FontAwesomeIcon icon={faRobot} className="icon" />
-                </div>
               </li>
+              {/* 채팅 출력 */}
               {chat.map((msg, i) => (
                 <li
                   className="chat-text"
@@ -254,103 +248,82 @@ const MainPage = () => {
                       <p key={index}>{line}</p>
                     ))}
                   </p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '4px',
-                      position: 'absolute',
-                      bottom: msg.role === 'ai' ? '-40px' : '-20px',
-                      left: msg.role === 'ai' && '-20px',
-                      right: msg.role === 'user' && '0px',
-                    }}
-                  >
-                    {msg.role === 'ai' && (
-                      <div className="ai-icon" style={{ position: 'static' }}>
-                        {' '}
-                        <FontAwesomeIcon icon={faRobot} className="icon" />
-                      </div>
-                    )}
-                    <p style={{ color: '#989898', fontSize: '10px' }}>
-                      {new Date(msg.date).toLocaleString('ko-KR')}
-                    </p>
-                  </div>
                 </li>
               ))}
               {loading && (
                 <li>
-                  {' '}
                   <Spinner animation="border" variant="primary" />
                 </li>
               )}
             </ul>
           </div>
-          <div>
-            {/* 텍스트 검색 입력 버튼 */}
-            <div
-              className="d-flex gap-2 justify-content-center flex-wrap my-2"
-              style={{ height: '5vh' }}
+
+          {/* 입력창 */}
+          <div
+            className="d-flex gap-2 justify-content-center flex-wrap my-2"
+            style={{ height: '5vh' }}
+          >
+            <textarea
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit();
+                }
+              }}
+              value={inputText}
+              className="border-primary"
+            ></textarea>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleSubmit}
+              style={{
+                padding: ' 7px 14px',
+                borderRadius: '6px',
+                fontSize: '0.7em',
+              }}
             >
-              <textarea
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit();
-                  }
-                }}
-                value={inputText}
-                className="border-primary"
-              ></textarea>
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={handleSubmit}
-                style={{
-                  padding: ' 7px 14px',
-                  borderRadius: '6px',
-                  fontSize: '0.7em',
-                }}
-              >
-                보내기
-              </Button>
+              보내기
+            </Button>
+          </div>
+
+          {/* 버튼 */}
+          <div className="d-flex align-items-center justify-content-between m-2">
+            <div className="d-flex mx-2 gap-2 ">
+              {buttonText.map((text) => (
+                <p
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: '#ff8818ff',
+                    color: 'white',
+                    padding: ' 7px 14px',
+                    borderRadius: '6px',
+                    fontSize: '0.7em',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                  }}
+                  onClick={() => assistButtonHandler(text)}
+                >
+                  {text}
+                </p>
+              ))}
             </div>
-            {/* 힌트, 포기, 다시하기 버튼 */}
-            <div className="d-flex align-items-center justify-content-between m-2">
-              <div className="d-flex mx-2 gap-2 ">
-                {buttonText.map((text) => (
-                  <p
-                    style={{
-                      cursor: 'pointer',
-                      backgroundColor: '#ff8818ff',
-                      color: 'white',
-                      padding: ' 7px 14px',
-                      borderRadius: '6px',
-                      fontSize: '0.7em',
-                      fontWeight: 'bold',
-                      display: 'flex',
-                    }}
-                    onClick={() => assistButtonHandler(text)}
-                  >
-                    {text}
-                  </p>
-                ))}
-              </div>
-              <p
-                style={{
-                  cursor: 'pointer',
-                  color: '#787878ff',
-                  fontSize: '1.3em',
-                  marginRight: '1%',
-                }}
-                onClick={() => setShowModal(true)}
-              >
-                <FontAwesomeIcon icon={faBook} />
-              </p>
-            </div>
+            <p
+              style={{
+                cursor: 'pointer',
+                color: '#787878ff',
+                fontSize: '1.3em',
+                marginRight: '1%',
+              }}
+              onClick={() => setShowModal(true)}
+            >
+              <FontAwesomeIcon icon={faBook} />
+            </p>
           </div>
         </div>
       </div>
-      {/* 모달 생성 컴포넌트 */}
+
       {showModal && (
         <ModalPage
           show={showModal}

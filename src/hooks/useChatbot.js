@@ -1,4 +1,3 @@
-// src/hooks/useChatbot.js
 import { useState, useEffect } from 'react';
 import { useQuestionStore } from '../store/useQuestionStore';
 
@@ -20,13 +19,6 @@ const stringToHash = (str) => {
 };
 
 const useChatbot = () => {
-  const [question, setQuestion] = useState('');
-  const [chat, setChat] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [level, setLevel] = useState('');
-  const [subject, setSubject] = useState('');
-  const [version, setVersion] = useState('gemini-2.5-flash-lite');
-
   const { addQuestions } = useQuestionStore();
 
   const ranLevels = ['상', '중', '하'];
@@ -34,11 +26,51 @@ const useChatbot = () => {
 
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+  // LocalStorage 초기값 불러오기
+  const [question, setQuestion] = useState(() => {
+    return localStorage.getItem('question') || '';
+  });
+
+  const [chat, setChat] = useState(() => {
+    const saved = localStorage.getItem('chat');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [level, setLevel] = useState(() => localStorage.getItem('level') || '');
+  const [subject, setSubject] = useState(
+    () => localStorage.getItem('subject') || ''
+  );
+  const [version, setVersion] = useState(
+    () => localStorage.getItem('version') || 'gemini-2.5-flash-lite'
+  );
+
+  // LocalStorage 저장
+  useEffect(() => {
+    localStorage.setItem('chat', JSON.stringify(chat));
+  }, [chat]);
+
+  useEffect(() => {
+    localStorage.setItem('question', question);
+  }, [question]);
+
+  useEffect(() => {
+    localStorage.setItem('level', level);
+  }, [level]);
+
+  useEffect(() => {
+    localStorage.setItem('subject', subject);
+  }, [subject]);
+
+  useEffect(() => {
+    localStorage.setItem('version', version);
+  }, [version]);
+
+  // 질문 제출
   const submitQuestion = async (prompt) => {
     const userInput = prompt ?? question;
     if (!userInput.trim()) return;
 
-    // 사용자 메시지 생성
     const userMessage = {
       role: 'user',
       content: userInput,
@@ -51,8 +83,8 @@ const useChatbot = () => {
     setLoading(true);
     setQuestion('');
 
-    const currentLevel = level ? level : getRandom(ranLevels);
-    const currentSubject = subject ? subject : getRandom(ranSubjects);
+    const currentLevel = level || getRandom(ranLevels);
+    const currentSubject = subject || getRandom(ranSubjects);
 
     const baseInstruction = `
       당신은 면접관이고 ${currentLevel} 난이도와 ${currentSubject}의 면접 질문을 해준다.
@@ -118,6 +150,7 @@ const useChatbot = () => {
     }
   };
 
+  // AI 답변 파싱
   const answers = chat
     .filter(
       (msg) =>
