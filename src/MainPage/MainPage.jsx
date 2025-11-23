@@ -201,12 +201,12 @@ const MainPage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '6vh',
+                fontSize: '0.8em',
               }}
             >
               <li
                 style={{
                   position: 'relative',
-                  fontSize: '0.8em',
                   padding: '8px 14px',
                   backgroundColor: '#ebebeb',
                   borderRadius: '15px',
