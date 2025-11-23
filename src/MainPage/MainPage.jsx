@@ -12,11 +12,9 @@ const MainPage = () => {
     const saved = localStorage.getItem('quota');
     return saved ? Number(saved) : 0;
   });
-
-  const [inputText, setInputText] = useState(() => {
-    return localStorage.getItem('inputText') || '';
-  });
-
+  const [inputText, setInputText] = useState(
+    () => localStorage.getItem('inputText') || ''
+  );
   const chatBoxRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [msg, setMsg] = useState('');
@@ -37,20 +35,17 @@ const MainPage = () => {
 
   const buttonText = ['빠른질문', '힌트', '포기', '다시시작'];
 
+  // 채팅 스크롤 자동
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [chat, loading]);
 
-  // -------------------------
-  // inputText LocalStorage 저장
-  // -------------------------
+  // inputText, quota LocalStorage 저장
   useEffect(() => {
     localStorage.setItem('inputText', inputText);
   }, [inputText]);
-
-  // quota LocalStorage 저장
   useEffect(() => {
     localStorage.setItem('quota', quota);
   }, [quota]);
@@ -64,24 +59,20 @@ const MainPage = () => {
     )
     .filter((el) => el.role === 'ai');
 
-  // 일일할당량 메시지
+  // 일일 할당량 메시지
   useEffect(() => {
-    const percent = Math.floor((answerGraph.length / Number(quota)) * 100);
+    const percent =
+      quota > 0 ? Math.floor((answerGraph.length / quota) * 100) : 0;
     if (percent >= 100) {
       setMsg('100% 달성! 축하드려요');
       if (window.confirm('100% 달성! 축하드려요 다시 시작하시겠습니까?')) {
         setQuota(0);
         setChat([]);
       }
-    } else if (percent >= 80) {
-      setMsg('이제 얼마 남지 않았어요 조금만 더!');
-    } else if (percent >= 50) {
-      setMsg('이제 절반 넘었어요!! 화이팅~');
-    } else if (percent >= 20) {
-      setMsg('아직 갈길이 멀어요! 좀 더 힘내보아요');
-    } else {
-      setMsg('이제 시작해보자!');
-    }
+    } else if (percent >= 80) setMsg('이제 얼마 남지 않았어요 조금만 더!');
+    else if (percent >= 50) setMsg('이제 절반 넘었어요!! 화이팅~');
+    else if (percent >= 20) setMsg('아직 갈길이 멀어요! 좀 더 힘내보아요');
+    else setMsg('이제 시작해보자!');
   }, [answerGraph.length, quota]);
 
   const assistButtonHandler = (text) => {
@@ -134,10 +125,7 @@ const MainPage = () => {
             <p>
               {quota === 0
                 ? 0
-                : Math.min(
-                    Math.floor((answerGraph.length * 100) / Number(quota)),
-                    100
-                  )}
+                : Math.min(Math.floor((answerGraph.length * 100) / quota), 100)}
               %
             </p>
           </div>
@@ -158,9 +146,7 @@ const MainPage = () => {
                   width:
                     quota > 0
                       ? Math.min(
-                          Math.floor(
-                            (answerGraph.length * 100) / Number(quota)
-                          ),
+                          Math.floor((answerGraph.length * 100) / quota),
                           100
                         ) + '%'
                       : '0%',
@@ -205,11 +191,11 @@ const MainPage = () => {
                 listStyle: 'none',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '6vh',
+                gap: '4vh',
                 fontSize: '0.8em',
               }}
             >
-              {/* 초기 메시지 */}
+              {/* 초기 안내 메시지 */}
               <li
                 style={{
                   position: 'relative',
@@ -219,17 +205,33 @@ const MainPage = () => {
                   width: '70%',
                   wordBreak: 'keep-all',
                   display: 'flex',
-                  gap: '10px',
+                  gap: '8px',
+                  alignItems: 'flex-start',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      backgroundColor: '#0d6efd',
+                    }}
+                  ></div>
                   <FontAwesomeIcon icon={faRobot} className="icon" />
                 </div>
                 <div
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '0.5vh',
+                    gap: '2px',
                   }}
                 >
                   <p>안녕하세요 ai 면접관입니다.</p>
@@ -247,14 +249,13 @@ const MainPage = () => {
                 </div>
               </li>
 
-              {/* 채팅 출력 */}
+              {/* 실제 채팅 */}
               {chat.map((msg, i) => (
                 <li
-                  className="chat-text"
                   key={i}
                   style={{
                     fontSize: '1em',
-                    padding: ' 1vh 4%',
+                    padding: '1vh 4%',
                     alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
                     width: '50%',
                     backgroundColor:
@@ -266,20 +267,55 @@ const MainPage = () => {
                   }}
                 >
                   {msg.role === 'ai' && (
-                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '5px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '10px',
+                          height: '10px',
+                          borderRadius: '50%',
+                          backgroundColor: '#0d6efd',
+                          marginTop: '8px',
+                        }}
+                      ></div>
                       <FontAwesomeIcon icon={faRobot} className="icon" />
                     </div>
                   )}
-                  <p
+                  <div
                     style={{
-                      color: msg.role === 'ai' ? '#212529' : '#fff',
-                      padding: '0 1%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '2px',
                     }}
                   >
-                    {msg.content.split('\n').map((line, index) => (
-                      <p key={index}>{line}</p>
+                    {msg.content.split('\n').map((line, idx) => (
+                      <p
+                        key={idx}
+                        style={{
+                          color: msg.role === 'ai' ? '#212529' : '#fff',
+                          margin: 0,
+                        }}
+                      >
+                        {line}
+                      </p>
                     ))}
-                  </p>
+                    <p
+                      style={{
+                        fontSize: '0.7em',
+                        color: '#989898',
+                        alignSelf:
+                          msg.role === 'user' ? 'flex-end' : 'flex-start',
+                        margin: '2px 0 0 0',
+                      }}
+                    >
+                      {new Date(msg.date).toLocaleString('ko-KR')}
+                    </p>
+                  </div>
                 </li>
               ))}
 
@@ -312,7 +348,7 @@ const MainPage = () => {
               size="lg"
               onClick={handleSubmit}
               style={{
-                padding: ' 7px 14px',
+                padding: '7px 14px',
                 borderRadius: '6px',
                 fontSize: '0.7em',
               }}
@@ -323,14 +359,15 @@ const MainPage = () => {
 
           {/* 버튼 */}
           <div className="d-flex align-items-center justify-content-between m-2">
-            <div className="d-flex mx-2 gap-2 ">
+            <div className="d-flex mx-2 gap-2">
               {buttonText.map((text) => (
                 <p
+                  key={text}
                   style={{
                     cursor: 'pointer',
                     backgroundColor: '#ff8818ff',
                     color: 'white',
-                    padding: ' 7px 14px',
+                    padding: '7px 14px',
                     borderRadius: '6px',
                     fontSize: '0.7em',
                     fontWeight: 'bold',
