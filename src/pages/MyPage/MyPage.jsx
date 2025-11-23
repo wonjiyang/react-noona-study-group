@@ -12,7 +12,7 @@ const MyPage = () => {
             className={`w-50 text-center fw-bold ${
               pathname === '/my/questions' ? 'border-primary' : ''
             }`}
-            style={{ borderBottom: `2px solid #dddddd` }}
+            style={{ borderBottom: `2px solid #dddddd`, height: '0' }}
           >
             <Nav.Link
               className={`nav-link-gray ${
@@ -28,7 +28,7 @@ const MyPage = () => {
             className={`w-50 text-center fw-bold ${
               pathname === '/my/bookmarks' ? 'border-primary' : ''
             }`}
-            style={{ borderBottom: '2px solid #E8E8E8' }}
+            style={{ borderBottom: '2px solid #E8E8E8', height: '0' }}
           >
             <Nav.Link
               className={`nav-link-blue ${
