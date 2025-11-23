@@ -34,16 +34,14 @@ body {
   font-size: 0.8em;
 }
 
-.nav-link-gray {
+.my-nav-link {
   height: none;
-  font-size: 14px;
+  font-size: 12px !important;
   color: #d3d3d3;
 }
 
-.nav-link-blue {
-  height: none;
-  font-size: 14px;
-  color: #d3d3d3;
+.border-primary {
+  border-radius: 0 !important;
 }
 
 .form-control::placeholder {
@@ -58,25 +56,11 @@ body {
     width: 80%;
     min-height: 82vh;
   }
-  .nav-link-gray {
-    font-size: 1.5vw !important;
-  }
-
-  .nav-link-blue {
-    font-size: 1.5vw !important;
-  }
 }
 
 @media (max-width: 768px) {
   .rounded-4 {
     width: 92%;
-  }
-  .nav-link-gray {
-    font-size: 2vw !important;
-  }
-
-  .nav-link-blue {
-    font-size: 2vw !important;
   }
 }
 
@@ -88,11 +72,7 @@ body {
     width: 100%;
     min-height: 83vh;
   }
-  .nav-link-gray {
-    font-size: 2.8vw !important;
-  }
-
-  .nav-link-blue {
-    font-size: 2.8vw !important;
+  .my-nav-link {
+    font-size: 11px !important;
   }
 }
