@@ -39,17 +39,20 @@ const IntroMain = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [charIndex, msgIndex, currentText, introMessages]);
+  }, [charIndex, msgIndex, currentText]);
 
   useEffect(() => {
     const box = document.getElementById('scrollBox');
-    if (box) {
-      box.scrollTop = box.scrollHeight;
-    }
+    if (box) box.scrollTop = box.scrollHeight;
   }, [messages, currentText]);
 
-  const handleStart = () => {
-    navigate('/login');
+  const handleStart = () => navigate('/login');
+
+  const handleSkip = () => {
+    setMessages(introMessages);
+    setCurrentText('');
+    setMsgIndex(introMessages.length);
+    setCharIndex(0);
   };
 
   return (
@@ -63,14 +66,27 @@ const IntroMain = () => {
       <div className="box" id="scrollBox">
         <div className="chatBubbleContainer">
           {messages.map((msg, idx) => (
-            <div className="chatBubble" key={idx}>
-              <p className="message">{msg}</p>
+            <div
+              className={`chatBubble ${idx === 0 ? 'firstBubble' : ''}`}
+              key={idx}
+            >
+              <p className={`message ${idx === 0 ? 'firstMessage' : ''}`}>
+                {msg}
+              </p>
             </div>
           ))}
 
           {currentText && (
-            <div className={`chatBubble ${msgIndex === 0 ? '' : 'newBubble'}`}>
-              <p className={`message ${msgIndex === 0 ? '' : 'newMessage'}`}>
+            <div
+              className={`chatBubble ${
+                msgIndex === 0 ? 'firstBubble' : 'newBubble'
+              }`}
+            >
+              <p
+                className={`message ${
+                  msgIndex === 0 ? 'firstMessage' : 'newMessage'
+                }`}
+              >
                 {currentText}
               </p>
             </div>
@@ -80,6 +96,12 @@ const IntroMain = () => {
         {msgIndex === introMessages.length && currentText === '' && (
           <button onClick={handleStart} className="startButton">
             시작하기
+          </button>
+        )}
+
+        {msgIndex < introMessages.length && (
+          <button onClick={handleSkip} className="skipButton">
+            skip
           </button>
         )}
       </div>
