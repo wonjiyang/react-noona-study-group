@@ -108,6 +108,17 @@
   color: white !important;
 }
 
+.skipButton {
+  margin-top: 3px;
+  padding: 0.5vh 2%;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #d7d7d7;
+  cursor: pointer;
+  font-size: 0.6em;
+  align-self: center;
+}
+
 @media (max-width: 1024px) {
   .box {
     width: 75%;

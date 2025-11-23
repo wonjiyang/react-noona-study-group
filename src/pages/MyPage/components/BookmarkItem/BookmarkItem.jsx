@@ -40,11 +40,7 @@ const BookmarkItem = ({ bookmark, handleDeleteBookMark }) => {
             variant="primary"
             onClick={() => handleDeleteBookMark(bookmark.id)}
           >
-            <FontAwesomeIcon
-              className="text-primary "
-              icon={faBookmark}
-              style={{ color: '#ff8818ff' }}
-            />
+            <FontAwesomeIcon icon={faBookmark} style={{ color: '#ff8818ff' }} />
           </Button>
         </div>
       </div>
