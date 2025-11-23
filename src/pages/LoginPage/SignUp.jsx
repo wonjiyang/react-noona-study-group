@@ -165,11 +165,9 @@ const SignUp = () => {
         fluid="md"
         style={{
           maxWidth: 'clamp(480px, 55vw, 768px)',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
+          minHeight: 'auto',
           margin: '0 auto',
+          paddingTop: '40px',
         }}
       >
         <div className="white-background">

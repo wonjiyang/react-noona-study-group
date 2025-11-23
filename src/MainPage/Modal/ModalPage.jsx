@@ -1,5 +1,4 @@
 // src/components/Modal/ModalPage.jsx
-import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -14,12 +13,21 @@ const ModalPage = ({
   submitQuestion,
   quota,
   setQuota,
+  setVersion,
 }) => {
   const subjectHandler = (e) => setSubject(e.target.dataset.subject);
-
+  const geminiVersion = [
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash",
+  ];
   const selectThemeLevel = () => {
     if (quota <= 0) {
       alert("할당량을 지정해주세요.");
+      return;
+    } else if (!level || !subject) {
+      alert("난이도 및 테마를 선택해주세요");
       return;
     }
     submitQuestion(`난이도는 ${level}, 테마는 ${subject}로 면접 질문주세요`);
@@ -90,9 +98,23 @@ const ModalPage = ({
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={selectThemeLevel}>
-          전송
-        </Button>
+        <div className="d-flex w-100 justify-content-between">
+          <Form.Select
+            style={{ width: 200 }}
+            size="sm"
+            onChange={(e) => setVersion(e.target.value)}
+          >
+            {geminiVersion.map((val, i) => (
+              <option key={i} value={val}>
+                {val}
+              </option>
+            ))}
+          </Form.Select>
+
+          <Button variant="primary" onClick={selectThemeLevel}>
+            전송
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   );

@@ -35,12 +35,14 @@ body {
 }
 
 .nav-link-gray {
-  font-size: 0.9em !important;
+  height: none;
+  font-size: 14px;
   color: #d3d3d3;
 }
 
 .nav-link-blue {
-  font-size: 0.9em !important;
+  height: none;
+  font-size: 14px;
   color: #d3d3d3;
 }
 

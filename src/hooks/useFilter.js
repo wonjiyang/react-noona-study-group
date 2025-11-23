@@ -1,3 +1,4 @@
+// 검색 필터
 export const useSearchFilter = (items, searchTerm) => {
   if (!searchTerm) return items;
   const lowerTerm = searchTerm.toLowerCase();
@@ -31,8 +32,10 @@ export const useFilteredItems = (
   selectedSubject
 ) => {
   let filtered = items;
+
   filtered = useSearchFilter(filtered, searchTerm);
   filtered = useLevelFilter(filtered, selectedLevel);
   filtered = useSubjectFilter(filtered, selectedSubject);
+
   return filtered;
 };
