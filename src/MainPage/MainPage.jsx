@@ -12,9 +12,11 @@ const MainPage = () => {
     const saved = localStorage.getItem('quota');
     return saved ? Number(saved) : 0;
   });
-  const [inputText, setInputText] = useState(
-    () => localStorage.getItem('inputText') || ''
-  );
+
+  const [inputText, setInputText] = useState(() => {
+    return localStorage.getItem('inputText') || '';
+  });
+
   const chatBoxRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [msg, setMsg] = useState('');
@@ -35,17 +37,18 @@ const MainPage = () => {
 
   const buttonText = ['빠른질문', '힌트', '포기', '다시시작'];
 
-  // 채팅 스크롤 자동
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [chat, loading]);
 
-  // inputText, quota LocalStorage 저장
+  // inputText LocalStorage 저장
   useEffect(() => {
     localStorage.setItem('inputText', inputText);
   }, [inputText]);
+
+  // quota LocalStorage 저장
   useEffect(() => {
     localStorage.setItem('quota', quota);
   }, [quota]);
@@ -59,20 +62,24 @@ const MainPage = () => {
     )
     .filter((el) => el.role === 'ai');
 
-  // 일일 할당량 메시지
+  // 일일할당량 메시지
   useEffect(() => {
-    const percent =
-      quota > 0 ? Math.floor((answerGraph.length / quota) * 100) : 0;
+    const percent = Math.floor((answerGraph.length / Number(quota)) * 100);
     if (percent >= 100) {
       setMsg('100% 달성! 축하드려요');
       if (window.confirm('100% 달성! 축하드려요 다시 시작하시겠습니까?')) {
         setQuota(0);
         setChat([]);
       }
-    } else if (percent >= 80) setMsg('이제 얼마 남지 않았어요 조금만 더!');
-    else if (percent >= 50) setMsg('이제 절반 넘었어요!! 화이팅~');
-    else if (percent >= 20) setMsg('아직 갈길이 멀어요! 좀 더 힘내보아요');
-    else setMsg('이제 시작해보자!');
+    } else if (percent >= 80) {
+      setMsg('이제 얼마 남지 않았어요 조금만 더!');
+    } else if (percent >= 50) {
+      setMsg('이제 절반 넘었어요!! 화이팅~');
+    } else if (percent >= 20) {
+      setMsg('아직 갈길이 멀어요! 좀 더 힘내보아요');
+    } else {
+      setMsg('이제 시작해보자!');
+    }
   }, [answerGraph.length, quota]);
 
   const assistButtonHandler = (text) => {
@@ -125,7 +132,10 @@ const MainPage = () => {
             <p>
               {quota === 0
                 ? 0
-                : Math.min(Math.floor((answerGraph.length * 100) / quota), 100)}
+                : Math.min(
+                    Math.floor((answerGraph.length * 100) / Number(quota)),
+                    100
+                  )}
               %
             </p>
           </div>
@@ -146,7 +156,9 @@ const MainPage = () => {
                   width:
                     quota > 0
                       ? Math.min(
-                          Math.floor((answerGraph.length * 100) / quota),
+                          Math.floor(
+                            (answerGraph.length * 100) / Number(quota)
+                          ),
                           100
                         ) + '%'
                       : '0%',
@@ -191,7 +203,7 @@ const MainPage = () => {
                 listStyle: 'none',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '4vh',
+                gap: '2.5vh',
                 fontSize: '0.8em',
               }}
             >
@@ -205,27 +217,22 @@ const MainPage = () => {
                   width: '70%',
                   wordBreak: 'keep-all',
                   display: 'flex',
-                  gap: '8px',
-                  alignItems: 'flex-start',
+                  gap: '10px',
                 }}
               >
                 <div
                   style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: '#0d6efd',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '4px',
+                    justifyContent: 'center',
+                    flexShrink: 0,
                   }}
                 >
-                  <div
-                    style={{
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      backgroundColor: '#0d6efd',
-                    }}
-                  ></div>
-                  <FontAwesomeIcon icon={faRobot} className="icon" />
+                  <FontAwesomeIcon icon={faRobot} style={{ color: '#fff' }} />
                 </div>
                 <div
                   style={{
@@ -249,9 +256,10 @@ const MainPage = () => {
                 </div>
               </li>
 
-              {/* 실제 채팅 */}
+              {/* 채팅 출력 */}
               {chat.map((msg, i) => (
                 <li
+                  className="chat-text"
                   key={i}
                   style={{
                     fontSize: '1em',
@@ -269,21 +277,20 @@ const MainPage = () => {
                   {msg.role === 'ai' && (
                     <div
                       style={{
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '70%',
+                        backgroundColor: '#0d6efd',
                         display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '5px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
                       }}
                     >
-                      <div
-                        style={{
-                          width: '10px',
-                          height: '10px',
-                          borderRadius: '50%',
-                          backgroundColor: '#0d6efd',
-                          marginTop: '8px',
-                        }}
-                      ></div>
-                      <FontAwesomeIcon icon={faRobot} className="icon" />
+                      <FontAwesomeIcon
+                        icon={faRobot}
+                        style={{ color: '#fff' }}
+                      />
                     </div>
                   )}
                   <div
@@ -307,7 +314,7 @@ const MainPage = () => {
                     <p
                       style={{
                         fontSize: '0.7em',
-                        color: '#989898',
+                        color: msg.role === 'ai' ? '#989898' : '#fff',
                         alignSelf:
                           msg.role === 'user' ? 'flex-end' : 'flex-start',
                         margin: '2px 0 0 0',
@@ -359,10 +366,9 @@ const MainPage = () => {
 
           {/* 버튼 */}
           <div className="d-flex align-items-center justify-content-between m-2">
-            <div className="d-flex mx-2 gap-2">
+            <div className="d-flex mx-2 gap-2 ">
               {buttonText.map((text) => (
                 <p
-                  key={text}
                   style={{
                     cursor: 'pointer',
                     backgroundColor: '#ff8818ff',
